@@ -29,6 +29,11 @@
             "date": 1697080182774,
             "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-12-09-error.log",
             "hash": "b288e7e66144ff02f8b8dcbb8f2143cdf2b87e01cffce7761c5732f3120ab42b"
+        },
+        {
+            "date": 1697087342954,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-12-11-error.log",
+            "hash": "dfbb6c565c279c4bfde03db4ced2ef398d195f07c93552c98b76b289e2d7fe5a"
         }
     ],
     "hashType": "sha256"
