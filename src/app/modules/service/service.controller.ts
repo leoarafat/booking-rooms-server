@@ -5,6 +5,9 @@ import cloudinary from 'cloudinary';
 import sendResponse from '../../../shared/sendResponse';
 import { ServicesService } from './service.service';
 import { Service } from './service.model';
+import pick from '../../../shared/pick';
+import { servicesFilterableFields } from './service.constants';
+import paginationFields from '../../../constants/pagination';
 
 //!
 const createService: RequestHandler = catchAsync(
@@ -20,6 +23,7 @@ const createService: RequestHandler = catchAsync(
     });
   },
 );
+
 //!
 const updateService: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
@@ -66,7 +70,25 @@ const updateService: RequestHandler = catchAsync(
   },
 );
 //!
+//!
+const getAllService = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, servicesFilterableFields);
 
+  const paginationOptions = pick(req.query, paginationFields);
+
+  const result = await ServicesService.getAllService(
+    filters,
+    paginationOptions,
+  );
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Service retrieved successfully',
+    meta: result.meta,
+    data: result.data,
+  });
+});
 //!
 const getSingleService: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
@@ -85,4 +107,5 @@ export const ServiceController = {
   createService,
   updateService,
   getSingleService,
+  getAllService,
 };

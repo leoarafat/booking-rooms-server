@@ -47,17 +47,6 @@ import { IRoom } from '../category/category.interface';
 
 // export type PropertyModel = Model<IProperty, Record<string, unknown>>;
 
-// export type IPropertyFilters = {
-//   searchTerm?: string;
-//   name?: string;
-//   age?: number;
-//   breed?: string;
-//   location?: string;
-//   category?: string;
-//   label?: string;
-//   minPrice?: number;
-//   maxPrice?: number;
-// };
 type LocationEnum =
   | 'Cox Bazar'
   | 'Dhaka'
@@ -92,4 +81,12 @@ export type Service = {
   rooms: Types.ObjectId | IRoom;
   createdAt?: Date;
   updatedAt?: Date;
+};
+export type IServicesFilters = {
+  searchTerm?: string;
+  category?: string;
+  propertyLocation?: string;
+  price?: string;
+  minPrice?: string;
+  maxPrice?: string;
 };

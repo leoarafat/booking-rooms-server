@@ -6,6 +6,8 @@ import { ENUM_USER_ROLE } from '../../../enums/user';
 
 const router = express.Router();
 
+router.get('/', ServiceController.getAllService);
+
 router.post(
   '/create-service',
   // validateRequest(UserValidation.create),

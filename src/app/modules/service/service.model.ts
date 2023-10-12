@@ -42,7 +42,7 @@ const ServiceSchema = new Schema(
       required: [true, 'bedTitle is required'],
     },
     price: {
-      type: Number,
+      type: String,
       required: [true, 'price is required'],
     },
     propertyDetails: {
