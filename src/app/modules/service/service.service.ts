@@ -27,7 +27,7 @@ const createService = async (payload: any) => {
     };
   }
 
-  const result = await Service.create(payload);
+  const result = await (await Service.create(payload)).populate('category');
   const categoryId = payload.category;
 
   const category = await Category.findById(categoryId);
@@ -83,7 +83,8 @@ const getAllService = async (
   const result = await Service.find(whereConditions)
     .sort(sortConditions)
     .skip(skip)
-    .limit(limit);
+    .limit(limit)
+    .populate('category');
 
   const total = await Service.countDocuments(whereConditions);
 
@@ -98,7 +99,7 @@ const getAllService = async (
 };
 //!
 const getSingleService = async (id: string) => {
-  const service = await Service.findById(id);
+  const service = await Service.findById(id).populate('category');
   return service;
 };
 

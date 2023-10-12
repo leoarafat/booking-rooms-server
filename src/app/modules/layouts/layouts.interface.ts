@@ -1,17 +1,17 @@
-import { Document } from "mongoose";
+import { Document } from 'mongoose';
 
-export interface IFaqItem extends Document {
+export type IFaqItem = {
   question: string;
   answer: string;
-}
-export interface ICategory extends Document {
+} & Document;
+export type ICategory = {
   title: string;
-}
-export interface IBannerImage extends Document {
+} & Document;
+export type IBannerImage = {
   public_id: string;
   url: string;
-}
-export interface ILayout extends Document {
+} & Document;
+export type ILayout = {
   type: string;
   faq: IFaqItem[];
   categories: ICategory[];
@@ -20,4 +20,4 @@ export interface ILayout extends Document {
     title: string;
     subTitle: string;
   };
-}
+} & Document;

@@ -60,7 +60,7 @@ const updateService: RequestHandler = catchAsync(
         new: true,
         // runValidators: true,
       },
-    );
+    ).populate('category');
     sendResponse(res, {
       statusCode: 200,
       success: true,
@@ -103,6 +103,8 @@ const getSingleService: RequestHandler = catchAsync(
     });
   },
 );
+//!
+
 export const ServiceController = {
   createService,
   updateService,

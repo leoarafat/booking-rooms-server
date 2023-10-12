@@ -1,7 +1,8 @@
-import { Request } from "express";
-import cloudinary from "cloudinary";
-import Layout from "./layouts.model";
-import ApiError from "../../../errors/ApiError";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Request } from 'express';
+import cloudinary from 'cloudinary';
+import Layout from './layouts.model';
+import ApiError from '../../../errors/Apierror';
 
 const createLayout = async (req: Request) => {
   const { type } = req.body;
@@ -9,13 +10,13 @@ const createLayout = async (req: Request) => {
   if (isExist) {
     throw new ApiError(400, `${type} is already exist`);
   }
-  if (type === "Banner") {
+  if (type === 'Banner') {
     const { image, title, subTitle } = req.body;
     const myCloud = await cloudinary.v2.uploader.upload(image, {
-      folder: "layout",
+      folder: 'layout',
     });
     const banner = {
-      type: "Banner",
+      type: 'Banner',
 
       banner: {
         image: {
@@ -28,7 +29,7 @@ const createLayout = async (req: Request) => {
     };
     await Layout.create(banner);
   }
-  if (type === "FAQ") {
+  if (type === 'FAQ') {
     const { faq } = req.body;
     const faqItems = await Promise.all(
       faq.map(async (item: any) => {
@@ -36,45 +37,45 @@ const createLayout = async (req: Request) => {
           question: item.question,
           answer: item.answer,
         };
-      })
+      }),
     );
-    await Layout.create({ type: "FAQ", faq: faqItems });
+    await Layout.create({ type: 'FAQ', faq: faqItems });
   }
-  if (type === "Categories") {
+  if (type === 'Categories') {
     const { categories } = req.body;
     const categoriesItem = await Promise.all(
       categories.map(async (item: any) => {
         return {
           title: item.title,
         };
-      })
+      }),
     );
-    await Layout.create({ type: "Categories", categories: categoriesItem });
+    await Layout.create({ type: 'Categories', categories: categoriesItem });
   }
 };
 
 const updateLayout = async (req: Request) => {
   const { type } = req.body;
 
-  if (type === "Banner") {
-    const bannerData: any = await Layout.findOne({ type: "Banner" });
+  if (type === 'Banner') {
+    const bannerData: any = await Layout.findOne({ type: 'Banner' });
     const { image, title, subTitle } = req.body;
-    const data = image.startsWith("https")
+    const data = image.startsWith('https')
       ? bannerData
       : await cloudinary.v2.uploader.upload(image, {
-          folder: "layout",
+          folder: 'layout',
         });
 
     // const myCloud = await cloudinary.v2.uploader.upload(image, {
     //   folder: "layout",
     // });
     const banner = {
-      type: "Banner",
+      type: 'Banner',
       image: {
-        public_id: image.startsWith("https")
+        public_id: image.startsWith('https')
           ? bannerData.banner.image.public_id
           : data?.public_id,
-        url: image.startsWith("https")
+        url: image.startsWith('https')
           ? bannerData.banner.image.url
           : data?.secure_url,
       },
@@ -84,9 +85,9 @@ const updateLayout = async (req: Request) => {
 
     await Layout.findByIdAndUpdate(bannerData._id, { banner });
   }
-  if (type === "FAQ") {
+  if (type === 'FAQ') {
     const { faq } = req.body;
-    const faqItem = await Layout.findOne({ type: "FAQ" });
+    const faqItem = await Layout.findOne({ type: 'FAQ' });
 
     const faqItems = await Promise.all(
       faq.map(async (item: any) => {
@@ -94,25 +95,25 @@ const updateLayout = async (req: Request) => {
           question: item.question,
           answer: item.answer,
         };
-      })
+      }),
     );
     await Layout.findByIdAndUpdate(faqItem?._id, {
-      type: "FAQ",
+      type: 'FAQ',
       faq: faqItems,
     });
   }
-  if (type === "Categories") {
+  if (type === 'Categories') {
     const { categories } = req.body;
-    const categoriesItem = await Layout.findOne({ type: "Categories" });
+    const categoriesItem = await Layout.findOne({ type: 'Categories' });
     const categoriesItems = await Promise.all(
       categories.map(async (item: any) => {
         return {
           title: item.title,
         };
-      })
+      }),
     );
     await Layout.findByIdAndUpdate(categoriesItem?._id, {
-      type: "Categories",
+      type: 'Categories',
       categories: categoriesItems,
     });
   }
