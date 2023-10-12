@@ -1,19 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 
 export type IUser = {
   _id?: string;
   name: string;
   email: string;
-  image?: {
+  avatar?: {
     public_id: string;
     url: string;
   };
   password: string;
   location?: string;
   role?: ENUM_USER_ROLE;
+  // room?: Types.ObjectId | IRoom;
 };
 export type IRegistration = {
   name: string;
@@ -42,6 +44,9 @@ export type IActivationRequest = {
 export type IUserLogin = {
   email: string;
   password: string;
+};
+export type IProfilePicture = {
+  avatar: string;
 };
 export type UserModel = {
   isUserExist(

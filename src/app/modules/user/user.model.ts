@@ -3,18 +3,29 @@ import { IUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../../config';
 
+const emailRegexPatternL: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UserSchema = new Schema<IUser, UserModel>(
   {
     name: {
       type: String,
       required: true,
     },
+
     email: {
       type: String,
-      required: true,
+      required: [true, 'Email is required'],
+      validate: {
+        validator: function (value: string) {
+          return emailRegexPatternL.test(value);
+        },
+        message: 'Please enter a valid email',
+      },
       unique: true,
     },
-
+    avatar: {
+      public_id: String,
+      url: String,
+    },
     password: {
       type: String,
       required: true,
@@ -26,6 +37,10 @@ const UserSchema = new Schema<IUser, UserModel>(
       type: String,
       default: 'user',
     },
+    // room: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'Room',
+    // },
   },
   {
     timestamps: true,

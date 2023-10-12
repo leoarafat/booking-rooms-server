@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Request, RequestHandler, Response } from 'express';
 import { UserService } from './user.service';
 
@@ -8,7 +9,7 @@ import catchAsync from '../../../shared/catchasync';
 const createUser: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { ...userData } = req.body;
-    console.log(userData);
+
     const result = await UserService.createUser(userData);
 
     sendResponse(res, {
@@ -39,6 +40,19 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const updateProfilePicture: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    //@ts-ignore
+    const result = await UserService.updateProfilePicture(req);
+    sendResponse(res, {
+      statusCode: 400,
+      success: true,
+      message: 'Picture updated successfully',
+      data: result,
+    });
+  },
+);
+
 const updateUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const updatedData = req.body;
@@ -64,6 +78,7 @@ export const UserController = {
   createUser,
   getAllUsers,
   getSingleUser,
+  updateProfilePicture,
   updateUser,
   deleteUser,
 };

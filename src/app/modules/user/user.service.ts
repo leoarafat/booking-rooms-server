@@ -1,15 +1,21 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ejs from 'ejs';
 import jwt, { Secret } from 'jsonwebtoken';
 import ApiError from '../../../errors/Apierror';
-import { IActivationToken, IRegistration, IUser } from './user.interface';
+import {
+  IActivationToken,
+  IProfilePicture,
+  IRegistration,
+  IUser,
+} from './user.interface';
 import path from 'path';
 import User from './user.model';
 import config from '../../../config';
 import sendEmail from '../../../utils/sendMail';
-
+import cloudinary from 'cloudinary';
 // const createUser = async (userData: IUser): Promise<IUser | null> => {
 //   const newUser = await User.create(userData);
 
@@ -78,7 +84,39 @@ const getSingleUser = async (id: string): Promise<IUser | null> => {
 
   return result;
 };
+const updateProfilePicture = async (req: Request) => {
+  const { avatar } = req.body as any;
 
+  //@ts-ignore
+  const userId = req?.user?._id;
+  const user = await User.findById(userId);
+
+  if (avatar && user) {
+    if (user?.avatar?.public_id) {
+      await cloudinary.v2.uploader.destroy(user?.avatar?.public_id);
+      const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+        folder: 'avatars',
+        width: 150,
+      });
+      user.avatar = {
+        public_id: myCloud.public_id,
+        url: myCloud.url,
+      };
+    } else {
+      const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+        folder: 'avatars',
+        width: 150,
+      });
+      user.avatar = {
+        public_id: myCloud.public_id,
+        url: myCloud.url,
+      };
+    }
+  }
+  await user?.save();
+
+  return user;
+};
 const updateUser = async (
   id: string,
   payload: Partial<IUser>,
@@ -89,18 +127,9 @@ const updateUser = async (
     throw new ApiError(404, 'User not found !');
   }
 
-  const { name, ...UserData } = payload;
+  const { ...UserData } = payload;
 
   const updatedUserData: Partial<IUser> = { ...UserData };
-
-  // dynamically handling
-
-  if (name && Object.keys(name).length > 0) {
-    Object.keys(name).forEach(key => {
-      const nameKey = `name.${key}` as keyof Partial<IUser>;
-      (updatedUserData as any)[nameKey] = name[key as keyof typeof name];
-    });
-  }
 
   const result = await User.findOneAndUpdate({ _id: id }, updatedUserData, {
     new: true,
@@ -118,4 +147,5 @@ export const UserService = {
   getSingleUser,
   updateUser,
   deleteUser,
+  updateProfilePicture,
 };
