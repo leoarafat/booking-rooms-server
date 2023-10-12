@@ -34,6 +34,41 @@
             "date": 1697087342954,
             "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-12-11-error.log",
             "hash": "dfbb6c565c279c4bfde03db4ced2ef398d195f07c93552c98b76b289e2d7fe5a"
+        },
+        {
+            "date": 1697091804309,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-12-12-error.log",
+            "hash": "1a15df34ab4bc8eddc08549f1cf01092f4a827de95a0b544e23f889c7f535001"
+        },
+        {
+            "date": 1697094012362,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-12-13-error.log",
+            "hash": "aa826454eece873984ed08cca1ea476b92d913d274dcb189619923872a4d7342"
+        },
+        {
+            "date": 1697098796235,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-12-14-error.log",
+            "hash": "231c1df6c581f6d1efa7f561cd48cfcc993db62f08ac0efb2387a91bd435c0e6"
+        },
+        {
+            "date": 1697101350669,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-12-15-error.log",
+            "hash": "ef2efbdca449a150bac8b53c015263ab53996eb07a28580e762d76ea23b43ba9"
+        },
+        {
+            "date": 1697105523596,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-12-16-error.log",
+            "hash": "be86d7065cb683378c137881a1614ee275108e4eaaf0c5f0ce7f7ec3df20142d"
+        },
+        {
+            "date": 1697108427140,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-12-17-error.log",
+            "hash": "bd94fc213cbfa613dbc06ea881c7529eb1e9b038d6838ac5abfc9e7224661a11"
+        },
+        {
+            "date": 1697112076193,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-12-18-error.log",
+            "hash": "034ea99aacfc86ba13fb99d99b4465fb6936006e60ecfb1b56046704ed42d483"
         }
     ],
     "hashType": "sha256"

@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Server } from 'http';
 import mongoose from 'mongoose';
 import { app } from './app';
 import config from './config/index';
 import { errorLogger, logger } from './shared/logger';
 import { v2 as cloudinary } from 'cloudinary';
-
+// require('dotenv').config();
 cloudinary.config({
   cloud_name: config.cloud_name,
   api_key: config.cloud_api_key,
