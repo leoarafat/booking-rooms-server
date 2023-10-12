@@ -8,9 +8,15 @@ import { ENUM_USER_ROLE } from '../../../enums/user';
 const router = express.Router();
 
 router.post(
-  '/signup',
+  '/create-user',
   validateRequest(UserValidation.create),
   UserController.createUser,
+);
+router.post(
+  '/create-admin',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN),
+  validateRequest(UserValidation.create),
+  UserController.createAdmin,
 );
 router.put(
   '/update-user-avatar',
@@ -29,6 +35,12 @@ router.patch(
   '/:id/my-profile',
   validateRequest(UserValidation.updateUserZodSchema),
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
+  UserController.updateUser,
+);
+router.patch(
+  '/:id/user-profile',
+  validateRequest(UserValidation.updateUserZodSchema),
+  auth(ENUM_USER_ROLE.SUPER_ADMIN),
   UserController.updateUser,
 );
 router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.deleteUser);
