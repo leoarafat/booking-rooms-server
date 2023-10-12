@@ -21,4 +21,4 @@ router.patch(
 
   CategoryController.updateCategory,
 );
-export const RoomRoutes = router;
+export const CategoryRoutes = router;

@@ -22,6 +22,26 @@ const reviewSchema = new Schema(
     },
   },
 );
+const bookingSchema = new Schema({
+  startDate: {
+    type: Date,
+    required: true,
+  },
+  endDate: {
+    type: Date,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'accepted', 'rejected', 'adjusted'],
+    default: 'pending',
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+});
 const ServiceSchema = new Schema(
   {
     propertyName: {
@@ -82,6 +102,7 @@ const ServiceSchema = new Schema(
       ref: 'Category',
       required: true,
     },
+    bookings: [bookingSchema],
   },
   {
     timestamps: true,
@@ -92,117 +113,3 @@ const ServiceSchema = new Schema(
 );
 
 export const Service = model('Service', ServiceSchema);
-
-// import { Schema, model } from 'mongoose';
-// import { LocationEnum } from './service.constants';
-
-// const reviewSchema = new Schema(
-//   {
-//     user: Object,
-//     rating: {
-//       type: Number,
-//       default: 0,
-//     },
-//     comment: String,
-//     commentReplies: [Object],
-//   },
-//   {
-//     timestamps: true,
-//     toJSON: {
-//       virtuals: true,
-//     },
-//   },
-// );
-
-// const commentSchema = new Schema(
-//   {
-//     user: Object,
-//     question: String,
-//     questionReplies: [Object],
-//   },
-//   {
-//     timestamps: true,
-//     toJSON: {
-//       virtuals: true,
-//     },
-//   },
-// );
-
-// const roomSchema = new Schema(
-//   {
-//     title: {
-//       type: String,
-//       required: true,
-//     },
-//     roomThumbnail: {
-//       public_id: {
-//         type: String,
-//       },
-//       url: {
-//         type: String,
-//       },
-//     },
-//     facilities: [{ title: String }],
-//     category: {
-//       type: String,
-//       enum: ['delux', 'delux king', 'delux twin'],
-//     },
-//     bedSize: {
-//       type: Number,
-//     },
-//     pricing: {
-//       type: Number,
-//     },
-//     roomSize: {
-//       type: String,
-//     },
-//     description: {
-//       type: String,
-//     },
-//   },
-//   {
-//     timestamps: true,
-//     toJSON: {
-//       virtuals: true,
-//     },
-//   },
-// );
-
-// const ServiceSchema = new Schema(
-//   {
-//     name: {
-//       type: String,
-//       required: [true, 'name is required'],
-//     },
-//     location: {
-//       type: String,
-//       enum: LocationEnum,
-//       required: true,
-//     },
-//     thumbnail: {
-//       public_id: {
-//         type: String,
-//       },
-//       url: {
-//         type: String,
-//       },
-//     },
-//     reviewAndRatings: [reviewSchema],
-//     comments: [commentSchema],
-//     rooms: [roomSchema],
-//     user: {
-//       type: Schema.Types.ObjectId,
-//       ref: 'User',
-//       required: true,
-//     },
-//   },
-
-//   {
-//     timestamps: true,
-//     toJSON: {
-//       virtuals: true,
-//     },
-//   },
-// );
-
-// export const Service = model('Service', ServiceSchema);
