@@ -4,6 +4,7 @@ import { rateLimit } from 'express-rate-limit';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import routes from './app/routes';
 import { NotFoundHandler } from './errors/NotFoundHandler';
+import cookieParser from 'cookie-parser';
 
 export const app: Application = express();
 //cors
@@ -13,6 +14,7 @@ app.use(
     credentials: true,
   }),
 );
+app.use(cookieParser());
 
 //parser
 app.use(express.json());

@@ -24,7 +24,7 @@ const UserSchema = new Schema<IUser, UserModel>(
     },
     role: {
       type: String,
-      required: true,
+      default: 'user',
     },
   },
   {

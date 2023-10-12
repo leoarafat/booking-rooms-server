@@ -1,4 +1,4 @@
-import { JwtPayload, Secret } from 'jsonwebtoken';
+import jwt, { JwtPayload, Secret } from 'jsonwebtoken';
 import config from '../../../config';
 
 import {
@@ -10,6 +10,31 @@ import {
 import User from '../user/user.model';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import ApiError from '../../../errors/Apierror';
+import { IActivationRequest, IUser } from '../user/user.interface';
+
+//!
+const activateUser = async (payload: IActivationRequest) => {
+  const { activation_code, activation_token } = payload;
+  const newUser: { user: IUser; activationCode: string } = jwt.verify(
+    activation_token,
+    config.activation_secret as string,
+  ) as { user: IUser; activationCode: string };
+  if (newUser.activationCode !== activation_code) {
+    throw new ApiError(400, 'Activation code is not valid');
+  }
+  const { name, email, password } = newUser.user;
+  const existUser = await User.findOne({ email });
+  if (existUser) {
+    throw new ApiError(400, 'Email is already exist');
+  }
+  const user = await User.create({
+    name,
+    email,
+    password,
+  });
+  return user;
+};
+//!
 
 const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   const { email, password } = payload;
@@ -109,4 +134,5 @@ export const AuthService = {
   loginUser,
   refreshToken,
   changePassword,
+  activateUser,
 };
