@@ -42,33 +42,95 @@ const createService = async (payload: any) => {
   return result;
 };
 //!
+// const getAllService = async (
+//   filters: IServicesFilters,
+//   paginationOptions: IPaginationOptions,
+// ): Promise<IGenericResponse<any[]>> => {
+//   const { searchTerm, minPrice, maxPrice, ...filtersData } = filters;
+
+//   const { page, limit, skip, sortBy, sortOrder } =
+//     paginationHelpers.calculatePagination(paginationOptions);
+
+//   const andConditions = [];
+
+//   if (searchTerm) {
+//     andConditions.push({
+//       $or: servicesSearchableFields.map(field => ({
+//         [field]: {
+//           $regex: searchTerm,
+//           $options: 'i',
+//         },
+//       })),
+//     });
+//   }
+
+//   if (Object.keys(filtersData).length) {
+//     andConditions.push({
+//       $and: Object.entries(filtersData).map(([field, value]) => ({
+//         [field]: value,
+//       })),
+//     });
+//   }
+
+//   const sortConditions: { [key: string]: SortOrder } = {};
+//   if (sortBy && sortOrder) {
+//     sortConditions[sortBy] = sortOrder;
+//   }
+
+//   const whereConditions =
+//     andConditions.length > 0 ? { $and: andConditions } : {};
+
+//   const result = await Service.find(whereConditions)
+//     .sort(sortConditions)
+//     .skip(skip)
+//     .limit(limit)
+//     .populate('category');
+
+//   const total = await Service.countDocuments(whereConditions);
+
+//   return {
+//     meta: {
+//       page,
+//       limit,
+//       total,
+//     },
+//     data: result,
+//   };
+// };
+//!
 const getAllService = async (
   filters: IServicesFilters,
   paginationOptions: IPaginationOptions,
 ): Promise<IGenericResponse<any[]>> => {
-  const { searchTerm, ...filtersData } = filters;
+  const { searchTerm, minPrice, maxPrice, ...filtersData } = filters;
 
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
 
-  const andConditions = [];
+  const whereConditions: any = {};
 
   if (searchTerm) {
-    andConditions.push({
-      $or: servicesSearchableFields.map(field => ({
-        [field]: {
-          $regex: searchTerm,
-          $options: 'i',
-        },
-      })),
-    });
+    whereConditions.$or = servicesSearchableFields.map(field => ({
+      [field]: {
+        $regex: searchTerm,
+        $options: 'i',
+      },
+    }));
   }
+  if (minPrice !== undefined || maxPrice !== undefined) {
+    whereConditions.price = {};
 
+    if (minPrice !== undefined) {
+      whereConditions.price.$gte = minPrice;
+    }
+
+    if (maxPrice !== undefined) {
+      whereConditions.price.$lte = maxPrice;
+    }
+  }
   if (Object.keys(filtersData).length) {
-    andConditions.push({
-      $and: Object.entries(filtersData).map(([field, value]) => ({
-        [field]: value,
-      })),
+    Object.entries(filtersData).forEach(([field, value]) => {
+      whereConditions[field] = value;
     });
   }
 
@@ -76,9 +138,6 @@ const getAllService = async (
   if (sortBy && sortOrder) {
     sortConditions[sortBy] = sortOrder;
   }
-
-  const whereConditions =
-    andConditions.length > 0 ? { $and: andConditions } : {};
 
   const result = await Service.find(whereConditions)
     .sort(sortConditions)
