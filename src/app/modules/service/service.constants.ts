@@ -12,7 +12,8 @@ export const LocationEnum = [
 ];
 export const servicesFilterableFields = [
   'searchTerm',
-  // 'category',
+  'category',
+
   'propertyLocation',
   'price',
   'minPrice',
