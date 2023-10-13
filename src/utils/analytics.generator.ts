@@ -1,11 +1,11 @@
-import { Document, Model } from 'mongoose';
+import { Model } from 'mongoose';
 
 type MonthData = {
   month: string;
   count: number;
 };
 
-export async function generatedLast12MonthData<T extends Document>(
+export async function generatedLast12MonthData<T>(
   model: Model<T>,
 ): Promise<{ last12Months: MonthData[] }> {
   const last12Months: MonthData[] = [];
