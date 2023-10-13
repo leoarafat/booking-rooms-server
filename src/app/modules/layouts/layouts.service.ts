@@ -1,8 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request } from 'express';
 import cloudinary from 'cloudinary';
-import Layout from './layouts.model';
+import Layout, { Blog } from './layouts.model';
 import ApiError from '../../../errors/Apierror';
+import { IPaginationOptions } from '../../../interfaces/paginations';
+import { IBlog, IBlogFilters } from './layouts.interface';
+import { paginationHelpers } from '../../../helpers/paginationHelper';
+import { blogSearchableFields } from './layout.constants';
+import { SortOrder } from 'mongoose';
 
 const createLayout = async (req: Request) => {
   const { type } = req.body;
@@ -53,7 +58,62 @@ const createLayout = async (req: Request) => {
     await Layout.create({ type: 'Categories', categories: categoriesItem });
   }
 };
+//!
+const createBlog = async (payload: any) => {
+  const avatar = payload.avatar;
+  if (avatar && typeof avatar === 'string') {
+    const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+      folder: 'blog',
+    });
+    payload.avatar = {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    };
+  }
+  const result = await Blog.create(payload);
+  return result;
+};
+//!
+const updateBlog = async (data: any, blogId: any) => {
+  const avatar = data.avatar;
 
+  const isBlog = await Blog.findById(blogId);
+  if (!isBlog) {
+    throw new ApiError(404, 'Blog not found');
+  }
+
+  const serviceData = (await Blog.findById(blogId)) as any;
+
+  if (avatar && !avatar.startsWith('https')) {
+    await cloudinary.v2.uploader.destroy(serviceData.avatar.public_url);
+
+    const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+      folder: 'blog',
+    });
+    data.avatar = {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    };
+    if (avatar.startsWith('https')) {
+      data.avatar = {
+        public_id: serviceData?.avatar.public_id,
+        url: serviceData?.avatar.url,
+      };
+    }
+  }
+
+  const blog = await Blog.findByIdAndUpdate(
+    blogId,
+    {
+      $set: data,
+    },
+    {
+      new: true,
+    },
+  );
+  return blog;
+};
+//!
 const updateLayout = async (req: Request) => {
   const { type } = req.body;
 
@@ -118,14 +178,86 @@ const updateLayout = async (req: Request) => {
     });
   }
 };
-
+//!
 const getLayoutByType = async (req: Request) => {
   const { type } = req.params;
   const layout = await Layout.findOne({ type });
   return layout;
 };
+//!
+const getBlog = async (
+  filters: IBlogFilters,
+  paginationOptions: IPaginationOptions,
+) => {
+  const { searchTerm, ...filtersData } = filters;
+
+  const { page, limit, skip, sortBy, sortOrder } =
+    paginationHelpers.calculatePagination(paginationOptions);
+
+  const andConditions = [];
+
+  if (searchTerm) {
+    andConditions.push({
+      $or: blogSearchableFields.map(field => ({
+        [field]: {
+          $regex: searchTerm,
+          $options: 'i',
+        },
+      })),
+    });
+  }
+
+  if (Object.keys(filtersData).length) {
+    andConditions.push({
+      $and: Object.entries(filtersData).map(([field, value]) => ({
+        [field]: value,
+      })),
+    });
+  }
+
+  const sortConditions: { [key: string]: SortOrder } = {};
+  if (sortBy && sortOrder) {
+    sortConditions[sortBy] = sortOrder;
+  }
+
+  const whereConditions =
+    andConditions.length > 0 ? { $and: andConditions } : {};
+
+  const result = await Blog.find(whereConditions)
+    .sort(sortConditions)
+    .skip(skip)
+    .limit(limit);
+
+  const total = await Blog.countDocuments(whereConditions);
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  };
+};
+//!
+const getBlogById = async (id: any) => {
+  const layout = await Blog.findById(id);
+  return layout;
+};
+//!
+//!
+const deleteBlog = async (id: string): Promise<IBlog | null> => {
+  const result = await Blog.findByIdAndDelete(id);
+
+  return result;
+};
 export const LayoutService = {
   createLayout,
   updateLayout,
   getLayoutByType,
+  createBlog,
+  updateBlog,
+  getBlog,
+  getBlogById,
+  deleteBlog,
 };

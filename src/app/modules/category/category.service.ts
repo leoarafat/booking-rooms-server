@@ -8,7 +8,10 @@ import {
 } from '../../../interfaces/paginations';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { categorySearchableFields } from './category.constants';
-import { SortOrder } from 'mongoose';
+import mongoose, { SortOrder } from 'mongoose';
+import { Service } from '../service/service.model';
+import ApiError from '../../../errors/Apierror';
+import { asyncForEach } from '../../../utils/utils';
 
 //!
 const createCategory = async (payload: any) => {
@@ -81,7 +84,34 @@ const getAllCategory = async (
   };
 };
 //!
+
+const deleteCategory = async (id: string) => {
+  const category = await Category.findById(id);
+  const categoryId = category?._id;
+  if (!category) {
+    throw new ApiError(404, 'Category not found');
+  }
+  const services = await Service.find({ category: id });
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    await asyncForEach(services, async (data: any) => {
+      await Service.deleteMany({ category: data.category });
+    });
+    await Category.findByIdAndDelete(categoryId);
+
+    await session.commitTransaction();
+    await session.endSession();
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    console.log(error);
+    throw error;
+  }
+};
+//!
 export const CategoryService = {
   createCategory,
   getAllCategory,
+  deleteCategory,
 };

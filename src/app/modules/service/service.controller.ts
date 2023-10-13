@@ -162,6 +162,18 @@ const addQuestionAnswer: RequestHandler = catchAsync(
   },
 );
 //!
+//!
+const deleteService = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const result = await ServicesService.deleteService(id);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Service deleted successfully',
+    data: result,
+  });
+});
+//!
 export const ServiceController = {
   createService,
   updateService,
@@ -170,4 +182,5 @@ export const ServiceController = {
   addReviewInService,
   addQuestion,
   addQuestionAnswer,
+  deleteService,
 };

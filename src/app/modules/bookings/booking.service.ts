@@ -115,7 +115,7 @@ const myBookings = async (user: any) => {
 //!
 const cancelBooking = async (data: any) => {
   const { bookingId } = data;
-  console.log(bookingId);
+
   const bookings = await Booking.findOneAndDelete(bookingId);
   return bookings;
 };

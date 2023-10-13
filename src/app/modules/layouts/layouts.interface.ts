@@ -21,3 +21,15 @@ export type ILayout = {
     subTitle: string;
   };
 } & Document;
+export type IBlog = {
+  title: string;
+  description: string;
+  avatar: {
+    public_id?: string;
+    url?: string;
+  };
+};
+export type IBlogFilters = {
+  searchTerm?: string;
+  title?: string;
+};

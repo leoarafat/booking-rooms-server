@@ -23,8 +23,12 @@ const UserSchema = new Schema<IUser, UserModel>(
       unique: true,
     },
     avatar: {
-      public_id: String,
-      url: String,
+      public_id: {
+        type: String,
+      },
+      url: {
+        type: String,
+      },
     },
     password: {
       type: String,
@@ -37,19 +41,21 @@ const UserSchema = new Schema<IUser, UserModel>(
       type: String,
       default: 'user',
     },
-    // room: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'Room',
-    // },
   },
+  // {
+  //   timestamps: true,
+  //   toJSON: {
+  //     virtuals: true,
+  //     transform: function (_doc, ret) {
+  //       delete ret.password;
+  //       return ret;
+  //     },
+  //   },
+  // },
   {
     timestamps: true,
     toJSON: {
       virtuals: true,
-      transform: function (_doc, ret) {
-        delete ret.password;
-        return ret;
-      },
     },
   },
 );

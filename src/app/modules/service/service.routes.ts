@@ -19,11 +19,11 @@ router.get(
 
   ServiceController.getSingleService,
 );
-// router.delete(
-//   '/:id',
-
-//   ServiceController.deleteService,
-// );
+router.delete(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  ServiceController.deleteService,
+);
 router.put(
   '/:id/add-question',
   auth(ENUM_USER_ROLE.ADMIN),
@@ -41,7 +41,7 @@ router.put(
 );
 router.patch(
   '/update-service/:id',
-
+  auth(ENUM_USER_ROLE.ADMIN),
   ServiceController.updateService,
 );
 export const ServiceRoutes = router;

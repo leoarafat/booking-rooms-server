@@ -257,7 +257,12 @@ const addQuestionAnswer = async (body: any, serviceId: string, userId: any) => {
   return service;
 };
 //!
+//!
+const deleteService = async (id: string) => {
+  const result = await Service.findByIdAndDelete(id);
 
+  return result;
+};
 export const ServicesService = {
   createService,
   getSingleService,
@@ -265,4 +270,5 @@ export const ServicesService = {
   addReviewInService,
   addQuestion,
   addQuestionAnswer,
+  deleteService,
 };

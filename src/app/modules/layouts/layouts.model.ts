@@ -1,10 +1,11 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
 import {
   IBannerImage,
+  IBlog,
   ICategory,
   IFaqItem,
   ILayout,
-} from "./layouts.interface";
+} from './layouts.interface';
 
 const faqSchema = new Schema<IFaqItem>({
   question: { type: String },
@@ -17,18 +18,56 @@ const bannerImageSchema = new Schema<IBannerImage>({
   public_id: { type: String },
   url: { type: String },
 });
-const layoutSchema = new Schema<ILayout>({
-  type: { type: String },
-  faq: [faqSchema],
-  categories: [categorySchema],
-  banner: {
-    image: bannerImageSchema,
-    title: { type: String },
-    subTitle: {
-      type: String,
+const layoutSchema = new Schema<ILayout>(
+  {
+    type: { type: String },
+    faq: [faqSchema],
+    categories: [categorySchema],
+    banner: {
+      image: bannerImageSchema,
+      title: { type: String },
+      subTitle: {
+        type: String,
+      },
     },
   },
-});
 
-const Layout = model<ILayout>("Layout", layoutSchema);
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+  },
+);
+const blogSchema = new Schema<IBlog>(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    avatar: {
+      public_id: {
+        type: String,
+        required: true,
+      },
+      url: {
+        type: String,
+        required: true,
+      },
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+  },
+);
+
+const Layout = model<ILayout>('Layout', layoutSchema);
+export const Blog = model<IBlog>('Blog', blogSchema);
 export default Layout;

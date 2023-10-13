@@ -18,7 +18,12 @@ router.post(
 );
 router.patch(
   '/update-category/:id',
-
+  auth(ENUM_USER_ROLE.ADMIN),
   CategoryController.updateCategory,
+);
+router.delete(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  CategoryController.deleteCategory,
 );
 export const CategoryRoutes = router;
