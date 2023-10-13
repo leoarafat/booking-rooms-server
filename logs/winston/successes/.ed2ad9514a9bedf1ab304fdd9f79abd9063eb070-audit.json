@@ -114,6 +114,16 @@
             "date": 1697187660893,
             "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\successes\\um-2023-10-13-15-success.log",
             "hash": "bc3457f96d1c4ad947b94c37a4f240003869bf74a42f93bcf08df05de117f58d"
+        },
+        {
+            "date": 1697191302425,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\successes\\um-2023-10-13-16-success.log",
+            "hash": "e2d8de75bcdea47d8c8109d345ccc9540b232244d73ac43189c372c30ccfd0ae"
+        },
+        {
+            "date": 1697194806261,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\successes\\um-2023-10-13-17-success.log",
+            "hash": "80fabfd3099a6a6bc1800c838e11ba865cc47b1159d75f170718581b4f921dea"
         }
     ],
     "hashType": "sha256"

@@ -1,19 +1,15 @@
 import { Schema, model } from 'mongoose';
 import { LocationEnum } from './service.constants';
+import { IComment } from './service.interface';
 
 const reviewSchema = new Schema(
   {
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-    },
+    user: Object,
     rating: {
       type: Number,
       default: 0,
     },
     comment: String,
-    commentReplies: [Object],
   },
   {
     timestamps: true,
@@ -22,7 +18,19 @@ const reviewSchema = new Schema(
     },
   },
 );
-
+const commentSchema = new Schema<IComment>(
+  {
+    user: Object,
+    question: String,
+    questionReplies: [Object],
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+  },
+);
 const ServiceSchema = new Schema(
   {
     propertyName: {
@@ -77,11 +85,15 @@ const ServiceSchema = new Schema(
       required: [true, 'facilities is required'],
     },
     reviews: [reviewSchema],
-
+    questions: [commentSchema],
     category: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
       required: true,
+    },
+    ratings: {
+      type: Number,
+      default: 0,
     },
   },
   {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -5,7 +6,13 @@ import cloudinary from 'cloudinary';
 import { Service } from './service.model';
 import { Category } from '../category/category.model';
 import ApiError from '../../../errors/Apierror';
-import { IServicesFilters } from './service.interface';
+import {
+  IAddAnswerData,
+  IAddQuestionData,
+  IAddReviewData,
+  IReview,
+  IServicesFilters,
+} from './service.interface';
 import {
   IGenericResponse,
   IPaginationOptions,
@@ -13,6 +20,8 @@ import {
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { servicesSearchableFields } from './service.constants';
 import { SortOrder } from 'mongoose';
+
+import User from '../user/user.model';
 
 //!
 const createService = async (payload: any) => {
@@ -161,11 +170,99 @@ const getSingleService = async (id: string) => {
   const service = await Service.findById(id).populate('category');
   return service;
 };
+//!
+const addReviewInService = async (body: any, serviceId: string, user: any) => {
+  const { rating, review }: IAddReviewData = body;
 
+  const service = await Service.findById(serviceId);
+  if (!service) {
+    throw new ApiError(404, 'Service not found');
+  }
+  const reviewData: any = {
+    user: user,
+    rating,
+    comment: review,
+  };
+  const reviews: IReview[] = (service?.reviews || []) as IReview[];
+  reviews.push(reviewData);
+  let avg = 0;
+  reviews.forEach((rev: any) => {
+    avg += rev.rating;
+  });
+  if (service) {
+    service.ratings = avg / reviews.length;
+  }
+  await service?.save();
+  return service;
+};
+//!
+//add question
+const addQuestion = async (body: any, serviceId: string, user: any) => {
+  const { question }: IAddQuestionData = body;
+  const service = await Service.findById(serviceId);
+
+  if (!service) {
+    throw new ApiError(404, 'Service not found');
+  }
+
+  const newQuestion: any = {
+    user: user,
+    question,
+    questionReply: [],
+  };
+
+  service.questions.push(newQuestion);
+  await service?.save();
+  // await Notification.create({
+  //   user: user?._id,
+  //   title: 'New Booking',
+  //   message: `You have a new order from ${service?.propertyName}`,
+  // });
+  return service;
+};
+//!
+// add answer to question course
+const addQuestionAnswer = async (body: any, serviceId: string, userId: any) => {
+  const { answer, questionId }: IAddAnswerData = body;
+
+  const user = await User.findById(userId.userId);
+
+  if (!user) {
+    throw new ApiError(404, 'User not found');
+  }
+
+  const service = await Service.findById(serviceId);
+  if (!service) {
+    throw new ApiError(404, 'Service not found');
+  }
+
+  const question = service?.questions?.find((item: any) =>
+    item._id.equals(questionId),
+  );
+  // console.log(question.user);
+  if (!question) {
+    throw new ApiError(400, 'Invalid question id');
+  }
+
+  const newAnswer: any = {
+    user: user,
+    answer,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  question.questionReplies.push(newAnswer);
+  await service?.save();
+  //@ts-ignore
+
+  return service;
+};
 //!
 
 export const ServicesService = {
   createService,
   getSingleService,
   getAllService,
+  addReviewInService,
+  addQuestion,
+  addQuestionAnswer,
 };

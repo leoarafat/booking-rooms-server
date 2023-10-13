@@ -24,6 +24,21 @@ router.get(
 
 //   ServiceController.deleteService,
 // );
+router.put(
+  '/:id/add-question',
+  auth(ENUM_USER_ROLE.ADMIN),
+  ServiceController.addQuestion,
+);
+router.put(
+  '/:id/add-answer',
+  auth(ENUM_USER_ROLE.ADMIN),
+  ServiceController.addQuestionAnswer,
+);
+router.put(
+  '/add-review/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  ServiceController.addReviewInService,
+);
 router.patch(
   '/update-service/:id',
 

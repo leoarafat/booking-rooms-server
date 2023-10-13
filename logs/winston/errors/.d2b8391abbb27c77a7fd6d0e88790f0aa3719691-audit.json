@@ -114,6 +114,16 @@
             "date": 1697187660901,
             "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-13-15-error.log",
             "hash": "bfed32119dbeac8f177a7eeab520cb7b36e2965657bd01701c2192ac260d20d9"
+        },
+        {
+            "date": 1697191302433,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-13-16-error.log",
+            "hash": "d040e7d741eea90aba9e23d218a90d26a6fbf30e6fdb3c38ef1fa7008147e21b"
+        },
+        {
+            "date": 1697194806269,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-13-17-error.log",
+            "hash": "badc50faf1260051318f82fe372416ba9554052b3bd75e9349761bf20becb012"
         }
     ],
     "hashType": "sha256"

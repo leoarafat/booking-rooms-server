@@ -105,9 +105,69 @@ const getSingleService: RequestHandler = catchAsync(
 );
 //!
 
+//!
+//add review in course
+const addReviewInService: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const body = req.body;
+    const serviceId = req.params.id;
+    const user = req.user;
+    const result = await ServicesService.addReviewInService(
+      body,
+      serviceId,
+      user,
+    );
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: `Review added successfully`,
+      data: result,
+    });
+  },
+);
+//!
+//add question
+const addQuestion: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const body = req.body;
+    const serviceId = req.params.id;
+    const user = req.user;
+    const result = await ServicesService.addQuestion(body, serviceId, user);
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: `Question added successfully`,
+      data: result,
+    });
+  },
+);
+//!
+//add answer in course question
+const addQuestionAnswer: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const body = req.body;
+    const serviceId = req.params.id;
+    const user = req.user;
+    const result = await ServicesService.addQuestionAnswer(
+      body,
+      serviceId,
+      user,
+    );
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: `Question answer successfully`,
+      data: result,
+    });
+  },
+);
+//!
 export const ServiceController = {
   createService,
   updateService,
   getSingleService,
   getAllService,
+  addReviewInService,
+  addQuestion,
+  addQuestionAnswer,
 };

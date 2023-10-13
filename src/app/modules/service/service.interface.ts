@@ -1,51 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-//!
-// export type IProperty = {
-//   name: string;
-//   age: number;
-//   price: number;
-//   location:
-//     | 'Dhaka'
-//     | 'Chattogram'
-//     | 'Barishal'
-//     | 'Rajshahi'
-//     | 'Sylhet'
-//     | 'Comilla'
-//     | 'Rangpur'
-//     | 'Mymensingh';
-
 import { Types } from 'mongoose';
 import { IUser } from '../user/user.interface';
 import { IRoom } from '../category/category.interface';
-
-//   breed:
-//     | 'Brahman'
-//     | 'Nellore'
-//     | 'Sahiwal'
-//     | 'Gir'
-//     | 'Indigenous'
-//     | 'Tharparkar'
-//     | 'Kankrej';
-//   weight: number;
-//   label: 'for sale' | 'sold out';
-//   category: 'Dairy' | 'Beef' | 'Dual Purpose';
-//   seller: Types.ObjectId | IUser;
-// };
-//!
-// export type IComment = {
-//   user: IUser;
-//   question: string;
-//   questionReplies: IComment[];
-// };
-// export type IReview = {
-//   user: IUser;
-//   rating: number;
-//   comment: string;
-//   commentReplies?: IComment[];
-// };
-// export type IServiceData = {};
-
-// export type PropertyModel = Model<IProperty, Record<string, unknown>>;
 
 type LocationEnum =
   | 'Cox Bazar'
@@ -89,4 +45,32 @@ export type IServicesFilters = {
   price?: string;
   minPrice?: string;
   maxPrice?: string;
+};
+export type IAddReviewData = {
+  review: string;
+  serviceId: string;
+  rating: string;
+  userId: string;
+};
+
+export type IReview = {
+  user: IUser;
+  rating: number;
+  comment: string;
+};
+
+export type IComment = {
+  user: IUser;
+  question: string;
+  questionReplies: IComment[];
+};
+
+export type IAddQuestionData = {
+  question: string;
+  // serviceId: string;
+};
+export type IAddAnswerData = {
+  answer: string;
+  // serviceId: string;
+  questionId: string;
 };

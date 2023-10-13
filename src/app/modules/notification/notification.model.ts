@@ -16,6 +16,11 @@ const notificationSchema = new Schema<INotification>(
       required: true,
       default: 'unread',
     },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
   },
   {
     timestamps: true,
