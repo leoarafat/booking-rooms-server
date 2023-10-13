@@ -15,7 +15,33 @@ const insertIntoDB: RequestHandler = catchAsync(
     });
   },
 );
+const myBookings: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const user = req.user;
+    const result = await BookingService.myBookings(user);
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: `Single Booking Data Retrieved successfully`,
+      data: result,
+    });
+  },
+);
+const cancelBooking: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const data = req.body;
+    const result = await BookingService.cancelBooking(data);
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: `Cancel My Booking successfully`,
+      data: result,
+    });
+  },
+);
 
 export const BookingController = {
   insertIntoDB,
+  myBookings,
+  cancelBooking,
 };

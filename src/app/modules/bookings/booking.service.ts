@@ -8,6 +8,7 @@ import { Booking } from './booking.model';
 import sendEmail from '../../../utils/sendMail';
 import Notification from '../notification/notification.model';
 
+//!
 const insertIntoDB = async (payload: any) => {
   const { serviceId, startDate, endDate, userId } = payload;
 
@@ -101,7 +102,25 @@ const insertIntoDB = async (payload: any) => {
   });
   return result;
 };
+//!
 
+//!
+const myBookings = async (user: any) => {
+  const { userId } = user;
+  const bookings = await Booking.find({
+    user: userId,
+  }).populate('user');
+  return bookings;
+};
+//!
+const cancelBooking = async (data: any) => {
+  const { bookingId } = data;
+  console.log(bookingId);
+  const bookings = await Booking.findOneAndDelete(bookingId);
+  return bookings;
+};
 export const BookingService = {
   insertIntoDB,
+  myBookings,
+  cancelBooking,
 };
