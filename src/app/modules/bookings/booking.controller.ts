@@ -3,6 +3,7 @@ import catchAsync from '../../../shared/catchasync';
 import sendResponse from '../../../shared/sendResponse';
 import { BookingService } from './booking.service';
 
+//!
 const insertIntoDB: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const data = req.body;
@@ -15,6 +16,7 @@ const insertIntoDB: RequestHandler = catchAsync(
     });
   },
 );
+//!
 const myBookings: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const user = req.user;
@@ -27,6 +29,7 @@ const myBookings: RequestHandler = catchAsync(
     });
   },
 );
+//!
 const cancelBooking: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const data = req.body;
@@ -39,9 +42,25 @@ const cancelBooking: RequestHandler = catchAsync(
     });
   },
 );
+//!
+const updateBooking: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const data = req.body;
+    const id = req.params.id;
+    const result = await BookingService.updateBooking(id, data);
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: ` Booking update successfully`,
+      data: result,
+    });
+  },
+);
+//!
 
 export const BookingController = {
   insertIntoDB,
   myBookings,
   cancelBooking,
+  updateBooking,
 };

@@ -34,7 +34,7 @@ router.get(
 router.patch(
   '/:id/my-profile',
   validateRequest(UserValidation.updateUserZodSchema),
-  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUPER_ADMIN),
   UserController.updateUser,
 );
 router.patch(

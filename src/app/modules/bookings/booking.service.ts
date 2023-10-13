@@ -7,6 +7,7 @@ import User from '../user/user.model';
 import { Booking } from './booking.model';
 import sendEmail from '../../../utils/sendMail';
 import Notification from '../notification/notification.model';
+import { IBooking } from './booking.interface';
 
 //!
 const insertIntoDB = async (payload: any) => {
@@ -115,12 +116,29 @@ const myBookings = async (user: any) => {
 //!
 const cancelBooking = async (data: any) => {
   const { bookingId } = data;
-
   const bookings = await Booking.findOneAndDelete(bookingId);
   return bookings;
+};
+//!
+const updateBooking = async (id: string, payload: any) => {
+  const isBooking = await Booking.findById(id);
+  if (!isBooking) {
+    throw new ApiError(404, 'Booking not found');
+  }
+  const { ...bookingData } = payload;
+  const updatedBookingData: Partial<IBooking> = { ...bookingData };
+  const result = await Booking.findOneAndUpdate(
+    { _id: id },
+    updatedBookingData,
+    {
+      new: true,
+    },
+  );
+  return result;
 };
 export const BookingService = {
   insertIntoDB,
   myBookings,
   cancelBooking,
+  updateBooking,
 };

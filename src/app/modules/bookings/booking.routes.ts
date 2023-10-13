@@ -12,22 +12,22 @@ const router = express.Router();
 router.post(
   '/',
   // validateRequest(UserValidation.create),
-  // auth(ENUM_USER_ROLE.USER),
+  auth(ENUM_USER_ROLE.USER),
   BookingController.insertIntoDB,
 );
 router.get(
   '/my-bookings',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.USER),
   BookingController.myBookings,
 );
 router.delete(
   '/cancel-bookings',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.USER),
   BookingController.cancelBooking,
 );
-// router.patch(
-//   '/update-category/:id',
-
-//   CategoryController.updateCategory,
-// );
+router.patch(
+  '/update-category/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  BookingController.updateBooking,
+);
 export const BookingRoutes = router;
