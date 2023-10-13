@@ -22,26 +22,7 @@ const reviewSchema = new Schema(
     },
   },
 );
-const bookingSchema = new Schema({
-  startDate: {
-    type: Date,
-    required: true,
-  },
-  endDate: {
-    type: Date,
-    required: true,
-  },
-  status: {
-    type: String,
-    enum: ['pending', 'accepted', 'rejected', 'adjusted'],
-    default: 'pending',
-  },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
-});
+
 const ServiceSchema = new Schema(
   {
     propertyName: {
@@ -102,7 +83,6 @@ const ServiceSchema = new Schema(
       ref: 'Category',
       required: true,
     },
-    bookings: [bookingSchema],
   },
   {
     timestamps: true,

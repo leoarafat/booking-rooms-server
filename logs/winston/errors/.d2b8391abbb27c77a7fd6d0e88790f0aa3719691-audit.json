@@ -94,6 +94,26 @@
             "date": 1697130167577,
             "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-12-23-error.log",
             "hash": "969e373f51a49ebe3d8891a1bcc0de9e67e5e9083fb225555a14f48015bdc075"
+        },
+        {
+            "date": 1697179623524,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-13-12-error.log",
+            "hash": "abe3bfc49b4748f3558d37f36965421ad60d1ff88e416731bd19feb30a7084b9"
+        },
+        {
+            "date": 1697180477885,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-13-13-error.log",
+            "hash": "b315378f9f87aa5c77f0e15e0116f779bd9c225246bd2cf7b3e7963018a9c88d"
+        },
+        {
+            "date": 1697186367340,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-13-14-error.log",
+            "hash": "909237bafb326625ea306a77a396389f41dc83681fa4716f54b9a0b7c345115c"
+        },
+        {
+            "date": 1697187660901,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\errors\\um-2023-10-13-15-error.log",
+            "hash": "bfed32119dbeac8f177a7eeab520cb7b36e2965657bd01701c2192ac260d20d9"
         }
     ],
     "hashType": "sha256"

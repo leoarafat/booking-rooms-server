@@ -94,6 +94,26 @@
             "date": 1697130167569,
             "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\successes\\um-2023-10-12-23-success.log",
             "hash": "e6e20ec2837d18e196807d0119b82a141a7633144bf06a556d0c0fac35528984"
+        },
+        {
+            "date": 1697179623511,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\successes\\um-2023-10-13-12-success.log",
+            "hash": "caecbd8572c9976a6217ce5f51edcad0ad4bfee750d3657bc4978bce554132a3"
+        },
+        {
+            "date": 1697180477874,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\successes\\um-2023-10-13-13-success.log",
+            "hash": "9de76a0083bb35a6189379afad53ccafc73b7b7a73d66af344a9de2a9821691a"
+        },
+        {
+            "date": 1697186367324,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\successes\\um-2023-10-13-14-success.log",
+            "hash": "d43de2591f0669f8bdd757ae7708369293bf92ac6e8e260e98b5ac2f498bc1c6"
+        },
+        {
+            "date": 1697187660893,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\successes\\um-2023-10-13-15-success.log",
+            "hash": "bc3457f96d1c4ad947b94c37a4f240003869bf74a42f93bcf08df05de117f58d"
         }
     ],
     "hashType": "sha256"
