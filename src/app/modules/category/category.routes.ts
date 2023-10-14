@@ -3,8 +3,8 @@ import express from 'express';
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import { CategoryController } from './category.controller';
-
-// import { ServiceController } from './service.controller';
+import { CategoryValidation } from './category.validations';
+import { validateRequest } from '../../middlewares/validateRequest';
 
 const router = express.Router();
 
@@ -12,12 +12,13 @@ router.get('/', CategoryController.getAllCategory);
 
 router.post(
   '/create-category',
-  // validateRequest(UserValidation.create),
+  validateRequest(CategoryValidation.create),
   auth(ENUM_USER_ROLE.ADMIN),
   CategoryController.createCategory,
 );
 router.patch(
   '/update-category/:id',
+  validateRequest(CategoryValidation.update),
   auth(ENUM_USER_ROLE.ADMIN),
   CategoryController.updateCategory,
 );

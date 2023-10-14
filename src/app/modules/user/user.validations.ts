@@ -2,32 +2,16 @@ import { z } from 'zod';
 
 const create = z.object({
   body: z.object({
-    // name: z.object({
-    //   firstName: z.string({
-    //     required_error: 'First name is required',
-    //   }),
-    //   lastName: z.string({
-    //     required_error: 'Last name is required',
-    //   }),
-    // }),
     name: z.string({
       required_error: 'Name is required',
     }),
-    // phoneNumber: z.string({
-    //   required_error: 'Phone number is required',
-    // }),
+
     email: z.string({
       required_error: 'Email  is required',
     }),
     password: z.string({
       required_error: 'Password is required',
     }),
-    // address: z.string({
-    //   required_error: 'Address is required',
-    // }),
-    // role: z.string({
-    //   required_error: 'Role is required',
-    // }),
   }),
 });
 const updateUserZodSchema = z.object({
@@ -36,7 +20,12 @@ const updateUserZodSchema = z.object({
     location: z.string({}).optional(),
     email: z.string({}).optional(),
     password: z.string({}).optional(),
-    address: z.string({}).optional(),
+    avatar: z
+      .object({
+        public_id: z.string({}).optional(),
+        url: z.string({}).optional(),
+      })
+      .optional(),
     role: z.string({}).optional(),
   }),
 });

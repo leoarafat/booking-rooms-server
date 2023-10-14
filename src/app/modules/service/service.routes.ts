@@ -2,7 +2,8 @@ import express from 'express';
 import { ServiceController } from './service.controller';
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
-// import { ServiceController } from './service.controller';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { ServiceValidation } from './service.validations';
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ router.get('/', ServiceController.getAllService);
 
 router.post(
   '/create-service',
-  // validateRequest(UserValidation.create),
+  validateRequest(ServiceValidation.create),
   auth(ENUM_USER_ROLE.ADMIN),
   ServiceController.createService,
 );
@@ -41,6 +42,7 @@ router.put(
 );
 router.patch(
   '/update-service/:id',
+  validateRequest(ServiceValidation.update),
   auth(ENUM_USER_ROLE.ADMIN),
   ServiceController.updateService,
 );

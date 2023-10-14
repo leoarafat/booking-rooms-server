@@ -58,10 +58,7 @@ const ServiceSchema = new Schema(
       type: String,
       required: [true, 'propertyDetails is required'],
     },
-    availablity: {
-      type: String,
-      required: [true, 'availablity is required'],
-    },
+
     numberOfGuest: {
       type: String,
       required: [true, 'numberOfGuest is required'],
@@ -90,6 +87,11 @@ const ServiceSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Category',
       required: true,
+    },
+    status: {
+      type: String,
+      enum: ['upcoming', 'in-progress'],
+      default: 'in-progress',
     },
     ratings: {
       type: Number,

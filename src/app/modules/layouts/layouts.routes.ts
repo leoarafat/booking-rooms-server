@@ -2,6 +2,8 @@ import express from 'express';
 import { LayoutController } from './layouts.controller';
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
+import { validateRequest } from '../../middlewares/validateRequest';
+import { BlogValidation } from './layouts.validations';
 
 const router = express.Router();
 router.get('/blog', LayoutController.getBlog);
@@ -13,7 +15,7 @@ router.post(
 );
 router.post(
   '/create-blog',
-
+  validateRequest(BlogValidation.create),
   auth(ENUM_USER_ROLE.ADMIN),
   LayoutController.createBlog,
 );
@@ -24,6 +26,7 @@ router.put(
 );
 router.put(
   '/update-blog/:id',
+  validateRequest(BlogValidation.update),
   auth(ENUM_USER_ROLE.ADMIN),
   LayoutController.updateBlog,
 );

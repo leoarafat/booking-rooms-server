@@ -8,13 +8,39 @@ import { Booking } from './booking.model';
 import sendEmail from '../../../utils/sendMail';
 import Notification from '../notification/notification.model';
 import { IBooking } from './booking.interface';
+import { IPaginationOptions } from '../../../interfaces/paginations';
+import { paginationHelpers } from '../../../helpers/paginationHelper';
+import { SortOrder } from 'mongoose';
+
+//!
+const getAllBookings = async (paginationOptions: IPaginationOptions) => {
+  const { page, limit, skip, sortBy, sortOrder } =
+    paginationHelpers.calculatePagination(paginationOptions);
+  const sortConditions: { [key: string]: SortOrder } = {};
+  if (sortBy && sortOrder) {
+    sortConditions[sortBy] = sortOrder;
+  }
+  const result = await Booking.find()
+    .sort(sortConditions)
+    .skip(skip)
+    .limit(limit);
+  const total = await Booking.countDocuments();
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  };
+};
 
 //!
 const insertIntoDB = async (payload: any) => {
   const { serviceId, startDate, endDate, userId } = payload;
 
   // Check if the user and service exist
-  const user = await User.findById(userId);
+  const user = (await User.findById(userId)) as any;
   if (!user) {
     throw new ApiError(404, 'User not found');
   }
@@ -137,6 +163,7 @@ const updateBooking = async (id: string, payload: any) => {
   return result;
 };
 export const BookingService = {
+  getAllBookings,
   insertIntoDB,
   myBookings,
   cancelBooking,

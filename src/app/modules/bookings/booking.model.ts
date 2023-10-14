@@ -8,9 +8,16 @@ const bookingSchema = new Schema({
   endDate: {
     type: Date,
   },
+  serviceId: {
+    type: String,
+    required: true,
+  },
+  userId: {
+    type: String,
+    required: true,
+  },
   totalPrice: {
     type: Number,
-    required: true,
     default: 0,
   },
   status: {
@@ -21,7 +28,6 @@ const bookingSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
   },
 });
 export const Booking = model('Booking', bookingSchema);

@@ -144,6 +144,11 @@
             "date": 1697209266433,
             "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\successes\\um-2023-10-13-21-success.log",
             "hash": "d305015e9c7f36e7c953c34f85d3a4213afd5820555dae5b5914889ed21f1ba8"
+        },
+        {
+            "date": 1697261167993,
+            "name": "D:\\next-level\\Assignment-9\\server\\logs\\winston\\successes\\um-2023-10-14-11-success.log",
+            "hash": "4d423190e895af160c33dd75e063f1549d7d828bfc77a1bf06182d8212f15fd5"
         }
     ],
     "hashType": "sha256"
