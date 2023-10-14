@@ -7,7 +7,11 @@ import { validateRequest } from '../../middlewares/validateRequest';
 
 const router = express.Router();
 
-router.get('/', auth(ENUM_USER_ROLE.ADMIN), BookingController.getAllBookings);
+router.get(
+  '/',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  BookingController.getAllBookings,
+);
 
 router.post(
   '/',
@@ -22,7 +26,7 @@ router.get(
 );
 router.delete(
   '/cancel-bookings',
-  auth(ENUM_USER_ROLE.USER),
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
   BookingController.cancelBooking,
 );
 router.patch(

@@ -84,6 +84,7 @@ const getAllCategory = async (
   };
 };
 //!
+
 const deleteCategory = async (id: string) => {
   const category = await Category.findById(id);
   const categoryId = category?._id;

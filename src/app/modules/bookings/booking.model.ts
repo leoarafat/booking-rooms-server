@@ -1,33 +1,38 @@
 import { Schema, model } from 'mongoose';
 
-const bookingSchema = new Schema({
-  startDate: {
-    type: Date,
-    required: true,
+const bookingSchema = new Schema(
+  {
+    startDate: {
+      type: Date,
+      required: true,
+    },
+    endDate: {
+      type: Date,
+    },
+
+    totalPrice: {
+      type: Number,
+      default: 0,
+    },
+    room: {
+      type: Number,
+      default: 1,
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'accepted', 'rejected', 'adjusted'],
+      default: 'pending',
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
   },
-  endDate: {
-    type: Date,
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
   },
-  serviceId: {
-    type: String,
-    required: true,
-  },
-  userId: {
-    type: String,
-    required: true,
-  },
-  totalPrice: {
-    type: Number,
-    default: 0,
-  },
-  status: {
-    type: String,
-    enum: ['pending', 'accepted', 'rejected', 'adjusted'],
-    default: 'pending',
-  },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-  },
-});
+);
 export const Booking = model('Booking', bookingSchema);

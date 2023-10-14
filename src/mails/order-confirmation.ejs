@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Order Details</title>
+    <title>Booking Details</title>
     <style>
         /* Reset some default styles */
         body, h1, p, table {
@@ -75,7 +75,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Your StudySync Order is Confirmed</h1>
+        <h1>Your Booking.Com Hotel Booking is Confirmed</h1>
         <p>We're just as excited as you are!</p>
 
         <div class="course-info">
@@ -93,13 +93,19 @@
 
             <table>
                 <tr>
-                    <th>Item</th>
-                    <th>Quantity</th>
+                    <th>Room Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
                     <th>Cost</th>
                 </tr>
                 <tr>
                     <td><%= order.name %></td>
-                    <td>1</td>
+                    <td>
+                        <%= order.startDate %>
+                    </td>
+                    <td>
+                        <%= order.endDate %>
+                    </td>
                     <td>$<%= order.price %></td>
                 </tr>
             </table>
@@ -118,7 +124,7 @@
 
         <div class="footer">
             <p>If you have any questions, please contact our team at <a href="mailto:yeasinarafat1734@gmail.com">yeasinarafat1734@gmail.com</a></p>
-            <p>&copy; 2023 StudySync. All rights reserved.</p>
+            <p>&copy; 2023 Booking.Com. All rights reserved.</p>
         </div>
     </div>
 </body>

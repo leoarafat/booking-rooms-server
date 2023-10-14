@@ -8,7 +8,7 @@ const create = z.object({
     description: z.string({
       required_error: 'description id is required',
     }),
-    thumbnail: z.object({
+    avatar: z.object({
       public_id: z.string({ required_error: 'Public id  is required' }),
       url: z.string({ required_error: 'Url  is required' }),
     }),

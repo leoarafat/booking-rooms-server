@@ -25,7 +25,7 @@ const getCourseAnalytics: RequestHandler = catchAsync(
     sendResponse(res, {
       statusCode: 200,
       success: true,
-      message: 'Retrieved courses analytics',
+      message: 'Retrieved Service analytics',
       data: result,
     });
   },
@@ -38,7 +38,7 @@ const getOrdersAnalytics: RequestHandler = catchAsync(
     sendResponse(res, {
       statusCode: 200,
       success: true,
-      message: 'Retrieved orders analytics',
+      message: 'Retrieved Bookings analytics',
       data: result,
     });
   },

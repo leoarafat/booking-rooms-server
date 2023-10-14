@@ -15,19 +15,32 @@ router.post(
   auth(ENUM_USER_ROLE.ADMIN),
   ServiceController.createService,
 );
+router.post(
+  '/addToCart',
+  // validateRequest(ServiceValidation.create),
+  auth(ENUM_USER_ROLE.USER),
+  ServiceController.addToCart,
+);
+router.get('/cart', auth(ENUM_USER_ROLE.USER), ServiceController.getMyCart);
 router.get(
   '/:id',
 
   ServiceController.getSingleService,
 );
+
 router.delete(
   '/:id',
   auth(ENUM_USER_ROLE.ADMIN),
   ServiceController.deleteService,
 );
+router.delete(
+  '/:id/cart',
+  auth(ENUM_USER_ROLE.USER),
+  ServiceController.removeFromCart,
+);
 router.put(
   '/:id/add-question',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.USER),
   ServiceController.addQuestion,
 );
 router.put(
@@ -37,7 +50,7 @@ router.put(
 );
 router.put(
   '/add-review/:id',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.USER),
   ServiceController.addReviewInService,
 );
 router.patch(

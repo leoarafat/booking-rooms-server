@@ -10,6 +10,16 @@ const loginZodSchema = z.object({
     }),
   }),
 });
+const activateUserSchema = z.object({
+  body: z.object({
+    activation_code: z.string({
+      required_error: 'activation_code is required',
+    }),
+    activation_token: z.string({
+      required_error: 'activation_token is required',
+    }),
+  }),
+});
 const refreshTokenZodSchema = z.object({
   cookies: z.object({
     refreshToken: z.string({
@@ -31,4 +41,5 @@ export const AuthValidation = {
   loginZodSchema,
   refreshTokenZodSchema,
   changePasswordZodSchema,
+  activateUserSchema,
 };

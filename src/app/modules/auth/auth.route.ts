@@ -6,7 +6,11 @@ import { ENUM_USER_ROLE } from '../../../enums/user';
 import auth from '../../middlewares/auth';
 
 const router = express.Router();
-router.post('/activate-user', AuthController.activateUser);
+router.post(
+  '/activate-user',
+  validateRequest(AuthValidation.activateUserSchema),
+  AuthController.activateUser,
+);
 router.post(
   '/login',
   validateRequest(AuthValidation.loginZodSchema),

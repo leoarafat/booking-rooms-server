@@ -1,9 +1,10 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import cloudinary from 'cloudinary';
-import { Service } from './service.model';
+import { Cart, Service } from './service.model';
 import { Category } from '../category/category.model';
 import ApiError from '../../../errors/Apierror';
 import {
@@ -19,12 +20,19 @@ import {
 } from '../../../interfaces/paginations';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { servicesSearchableFields } from './service.constants';
-import { SortOrder } from 'mongoose';
 
 import User from '../user/user.model';
+import { SortOrder } from 'mongoose';
 
 //!
 const createService = async (payload: any) => {
+  const categoryId = payload.category;
+
+  const category = await Category.findById(categoryId);
+
+  if (!category) {
+    throw new ApiError(404, 'Category not found');
+  }
   const thumbnail = payload.thumbnail;
   if (thumbnail && typeof thumbnail === 'string') {
     const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
@@ -37,16 +45,41 @@ const createService = async (payload: any) => {
   }
 
   const result = await (await Service.create(payload)).populate('category');
-  const categoryId = payload.category;
-
-  const category = await Category.findById(categoryId);
-
-  if (!category) {
-    throw new ApiError(404, 'Category not found');
-  }
 
   category.services.push(result._id);
   await category.save();
+
+  return result;
+};
+//!
+const addToCart = async (payload: any) => {
+  const { serviceId, userId } = payload;
+
+  const isExist = await Cart.findOne({ service: serviceId, user: userId });
+  if (isExist) {
+    throw new ApiError(400, 'Service already exists');
+  }
+  const data = {
+    service: serviceId,
+    user: userId,
+  };
+  const result = (await (await Cart.create(data)).populate('service')).populate(
+    'user',
+  );
+  return result;
+};
+//!
+const removeFromCart = async (id: string) => {
+  const result = await Cart.findByIdAndDelete(id);
+  return result;
+};
+//!
+const getMyCart = async (payload: any) => {
+  const { userId } = payload;
+
+  const result = await Cart.findOne({ user: userId })
+    .populate('service')
+    .populate('user');
 
   return result;
 };
@@ -259,9 +292,26 @@ const addQuestionAnswer = async (body: any, serviceId: string, userId: any) => {
 //!
 //!
 const deleteService = async (id: string) => {
-  const result = await Service.findByIdAndDelete(id);
+  try {
+    const deletedService = await Service.findByIdAndRemove(id);
+    if (!deletedService) {
+      throw new ApiError(404, 'Service not found or could not be deleted');
+    }
+    const categoryId = deletedService.category;
 
-  return result;
+    if (categoryId) {
+      const category = await Category.findById(categoryId);
+      if (category) {
+        category.services = category.services.filter(
+          serviceId => serviceId.toString() !== id,
+        );
+        await category.save();
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 export const ServicesService = {
   createService,
@@ -271,4 +321,7 @@ export const ServicesService = {
   addQuestion,
   addQuestionAnswer,
   deleteService,
+  addToCart,
+  removeFromCart,
+  getMyCart,
 };

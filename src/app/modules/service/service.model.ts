@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { LocationEnum } from './service.constants';
+
 import { IComment } from './service.interface';
 
 const reviewSchema = new Schema(
@@ -39,7 +39,6 @@ const ServiceSchema = new Schema(
     },
     propertyLocation: {
       type: String,
-      enum: LocationEnum,
       require: true,
     },
     roomTitle: {
@@ -58,7 +57,11 @@ const ServiceSchema = new Schema(
       type: String,
       required: [true, 'propertyDetails is required'],
     },
-
+    availablity: {
+      type: String,
+      enum: ['Available', 'Unavailable'],
+      default: 'Available',
+    },
     numberOfGuest: {
       type: String,
       required: [true, 'numberOfGuest is required'],
@@ -105,5 +108,26 @@ const ServiceSchema = new Schema(
     },
   },
 );
+const addToCartSchema = new Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    service: {
+      type: Schema.Types.ObjectId,
+      ref: 'Service',
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+  },
+);
 
 export const Service = model('Service', ServiceSchema);
+export const Cart = model('Cart', addToCartSchema);

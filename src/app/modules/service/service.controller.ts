@@ -23,7 +23,48 @@ const createService: RequestHandler = catchAsync(
     });
   },
 );
+//!
+const addToCart: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const data = req.body;
 
+    const result = await ServicesService.addToCart(data);
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: `Add to cart successfully`,
+      data: result,
+    });
+  },
+);
+//!
+const removeFromCart: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    const result = await ServicesService.removeFromCart(id);
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: `remove from cart successfully`,
+      data: result,
+    });
+  },
+);
+//!
+const getMyCart: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const data = req.body;
+
+    const result = await ServicesService.getMyCart(data);
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: `Retrieved cart successfully`,
+      data: result,
+    });
+  },
+);
 //!
 const updateService: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
@@ -176,6 +217,7 @@ const deleteService = catchAsync(async (req: Request, res: Response) => {
 //!
 export const ServiceController = {
   createService,
+  addToCart,
   updateService,
   getSingleService,
   getAllService,
@@ -183,4 +225,6 @@ export const ServiceController = {
   addQuestion,
   addQuestionAnswer,
   deleteService,
+  removeFromCart,
+  getMyCart,
 };

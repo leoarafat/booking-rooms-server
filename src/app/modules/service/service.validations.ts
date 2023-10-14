@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { LocationEnum } from '../../../enums/location';
 
 const create = z.object({
   body: z.object({
@@ -26,12 +25,17 @@ const create = z.object({
     houseRules: z.string({
       required_error: 'houseRules is required',
     }),
-    propertyLocation: z.enum(
-      [...Object.values(LocationEnum)] as [string, ...string[]],
+
+    availablity: z.enum(
+      [...Object.values(['Available', 'Unavailable'])] as [string, ...string[]],
       {
         required_error: 'Location is required',
       },
     ),
+
+    propertyLocation: z.string({
+      required_error: 'Property Location is required',
+    }),
     thumbnail: z.object({
       public_id: z.string({ required_error: 'Public id  is required' }),
       url: z.string({ required_error: 'Url  is required' }),
@@ -54,8 +58,13 @@ const update = z.object({
     propertyDetails: z.string({}).optional(),
     numberOfGuest: z.string({}).optional(),
     houseRules: z.string({}).optional(),
-    propertyLocation: z
-      .enum([...Object.values(LocationEnum)] as [string, ...string[]], {})
+    propertyLocation: z.string({}).optional(),
+
+    availablity: z
+      .enum([...Object.values(['Available', 'Unavailable'])] as [
+        string,
+        ...string[],
+      ])
       .optional(),
     thumbnail: z
       .object({

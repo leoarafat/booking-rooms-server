@@ -8,12 +8,12 @@ const getUsersAnalytics = async () => {
   return users;
 };
 const getCourseAnalytics = async () => {
-  const courses = await generatedLast12MonthData(Service);
-  return courses;
+  const service = await generatedLast12MonthData(Service);
+  return service;
 };
 const getOrdersAnalytics = async () => {
-  const orders = await generatedLast12MonthData(Booking);
-  return orders;
+  const bookings = await generatedLast12MonthData(Booking);
+  return bookings;
 };
 
 export const AnalyticsService = {

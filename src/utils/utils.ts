@@ -21,7 +21,7 @@ export const hasTimeConflict = (
   }
   return false;
 };
-export const asyncForEach = async (array: any[], callback: any) => {
+export const asyncForEach = async (array: any[] | undefined, callback: any) => {
   if (!Array.isArray(array)) {
     throw new Error('Expected an array');
   }

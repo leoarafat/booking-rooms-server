@@ -37,7 +37,7 @@ const getAllBookings = async (paginationOptions: IPaginationOptions) => {
 
 //!
 const insertIntoDB = async (payload: any) => {
-  const { serviceId, startDate, endDate, userId } = payload;
+  const { serviceId, startDate, endDate, userId, room } = payload;
 
   // Check if the user and service exist
   const user = (await User.findById(userId)) as any;
@@ -63,6 +63,7 @@ const insertIntoDB = async (payload: any) => {
   }
 
   const bookingPrice = numberOfDays * service.price;
+  const totalPrice = bookingPrice * room;
 
   // Check if the room is already booked for the specified date range
   const alreadyBookedRooms = await Booking.find({
@@ -88,7 +89,8 @@ const insertIntoDB = async (payload: any) => {
   const booking = {
     startDate: parsedStartDate,
     endDate: parsedEndDate,
-    totalPrice: bookingPrice,
+    totalPrice: totalPrice,
+    room: room,
     user: user._id,
   };
   // Mail data
@@ -97,6 +99,8 @@ const insertIntoDB = async (payload: any) => {
       _id: service._id.toString().slice(0, 6),
       name: service.propertyName,
       price: bookingPrice,
+      startDate: parsedStartDate,
+      endDate: parsedEndDate,
       date: new Date().toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
@@ -109,7 +113,7 @@ const insertIntoDB = async (payload: any) => {
     { order: mailData },
   );
   try {
-    if (user) {
+    if (user || service) {
       await sendEmail({
         email: user.email,
         subject: 'Booking Confirmation',
