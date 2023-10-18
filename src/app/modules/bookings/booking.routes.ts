@@ -24,13 +24,14 @@ router.get(
   auth(ENUM_USER_ROLE.USER),
   BookingController.myBookings,
 );
+router.get('/:id', BookingController.getSIngleBooking);
 router.delete(
   '/cancel-bookings',
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
   BookingController.cancelBooking,
 );
 router.patch(
-  '/update-category/:id',
+  '/update-booking/:id',
   validateRequest(BookingValidation.update),
   auth(ENUM_USER_ROLE.ADMIN),
   BookingController.updateBooking,

@@ -10,15 +10,15 @@ export const app: Application = express();
 //cors
 app.use(
   cors({
-    origin: ['http://localhost:3000'],
+    origin: 'http://localhost:3000',
     credentials: true,
   }),
 );
 app.use(cookieParser());
 
 //parser
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '900mb' }));
+app.use(express.urlencoded({ extended: true, limit: '900mb' }));
 //Rate limit
 const limiter = rateLimit({
   max: 100,

@@ -7,6 +7,7 @@ import paginationFields from '../../../constants/pagination';
 import pick from '../../../shared/pick';
 import { blogFilterableFields } from './layout.constants';
 import { IBlog } from './layouts.interface';
+import { FAQ } from './layouts.model';
 
 //create Layout only for admin
 const createLayout: RequestHandler = catchAsync(
@@ -118,6 +119,32 @@ const deleteBlog = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+//!
+// Create a new FAQ entry
+const createFAQ: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const data = req.body;
+    const result = await FAQ.create(data);
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: 'Faq create successful',
+      data: result,
+    });
+  },
+);
+// Get all FAQ entries
+const getAllFAQs: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await FAQ.find();
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: 'Faq retrieved successful',
+      data: result,
+    });
+  },
+);
 export const LayoutController = {
   createLayout,
   updateLayout,
@@ -127,4 +154,6 @@ export const LayoutController = {
   getBlog,
   getBlogById,
   deleteBlog,
+  createFAQ,
+  getAllFAQs,
 };

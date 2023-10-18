@@ -17,6 +17,7 @@ const bookingSchema = new Schema(
     room: {
       type: Number,
       default: 1,
+      required: true,
     },
     status: {
       type: String,

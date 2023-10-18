@@ -8,7 +8,7 @@ export type IUser = {
   _id?: string;
   name: string;
   email: string;
-  avatar?: {
+  avatar: {
     public_id: string;
     url: string;
   };

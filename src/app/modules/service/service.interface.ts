@@ -50,7 +50,7 @@ export type IAddReviewData = {
   review: string;
   serviceId: string;
   rating: string;
-  userId: string;
+  user: Types.ObjectId | IUser;
 };
 
 export type IReview = {
@@ -67,6 +67,7 @@ export type IComment = {
 
 export type IAddQuestionData = {
   question: string;
+  user: Types.ObjectId | IUser;
   // serviceId: string;
 };
 export type IAddAnswerData = {

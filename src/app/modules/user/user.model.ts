@@ -22,13 +22,10 @@ const UserSchema = new Schema<IUser, UserModel>(
       },
       unique: true,
     },
+
     avatar: {
-      public_id: {
-        type: String,
-      },
-      url: {
-        type: String,
-      },
+      public_id: String,
+      url: String,
     },
     password: {
       type: String,

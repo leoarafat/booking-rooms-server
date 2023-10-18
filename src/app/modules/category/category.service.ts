@@ -15,7 +15,12 @@ import { asyncForEach } from '../../../utils/utils';
 
 //!
 const createCategory = async (payload: any) => {
+  const isExist = await Category.findOne({ category: payload.category });
+  if (isExist) {
+    throw new ApiError(400, 'Category already exists');
+  }
   const thumbnail = payload.thumbnail;
+
   if (thumbnail && typeof thumbnail === 'string') {
     const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
       folder: 'category',
@@ -110,8 +115,14 @@ const deleteCategory = async (id: string) => {
   }
 };
 //!
+//!
+const getSIngleCategory = async (id: string) => {
+  const service = await Category.findById(id);
+  return service;
+};
 export const CategoryService = {
   createCategory,
   getAllCategory,
   deleteCategory,
+  getSIngleCategory,
 };

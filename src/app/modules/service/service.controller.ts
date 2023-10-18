@@ -66,30 +66,37 @@ const getMyCart: RequestHandler = catchAsync(
   },
 );
 //!
+//!
 const updateService: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const data = req.body;
-    const thumbnail = data.thumbnail;
+    const data = req.body?.serviceData;
+    const thumbnail = data?.thumbnail;
     const serviceId = req.params.id;
-
     const serviceData = (await Service.findById(serviceId)) as any;
 
-    if (thumbnail && !thumbnail.startsWith('https')) {
-      await cloudinary.v2.uploader.destroy(serviceData.thumbnail.public_url);
+    if (
+      thumbnail &&
+      typeof thumbnail === 'string' &&
+      !thumbnail.startsWith('https')
+    ) {
+      if (serviceData?.thumbnail?.public_id) {
+        await cloudinary.v2.uploader.destroy(serviceData?.thumbnail?.public_id);
+      }
 
       const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
         folder: 'Service',
       });
+
       data.thumbnail = {
         public_id: myCloud.public_id,
         url: myCloud.secure_url,
       };
-      if (thumbnail.startsWith('https')) {
-        data.thumbnail = {
-          public_id: serviceData?.thumbnail.public_id,
-          url: serviceData?.thumbnail.url,
-        };
-      }
+    } else if (!thumbnail && serviceData?.thumbnail?.public_id) {
+      // If there's no new thumbnail but there's an existing public_id, retain the old image.
+      data.thumbnail = {
+        public_id: serviceData?.thumbnail.public_id,
+        url: serviceData?.thumbnail.url,
+      };
     }
 
     const service = await Service.findByIdAndUpdate(
@@ -99,18 +106,18 @@ const updateService: RequestHandler = catchAsync(
       },
       {
         new: true,
-        // runValidators: true,
       },
     ).populate('category');
+
     sendResponse(res, {
       statusCode: 200,
       success: true,
-      message: `Service updated successfully`,
+      message: 'Service updated successfully',
       data: service,
     });
   },
 );
-//!
+
 //!
 const getAllService = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, servicesFilterableFields);
@@ -152,12 +159,8 @@ const addReviewInService: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const body = req.body;
     const serviceId = req.params.id;
-    const user = req.user;
-    const result = await ServicesService.addReviewInService(
-      body,
-      serviceId,
-      user,
-    );
+
+    const result = await ServicesService.addReviewInService(body, serviceId);
     sendResponse(res, {
       statusCode: 200,
       success: true,
@@ -172,8 +175,8 @@ const addQuestion: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const body = req.body;
     const serviceId = req.params.id;
-    const user = req.user;
-    const result = await ServicesService.addQuestion(body, serviceId, user);
+    // const user = req.user;
+    const result = await ServicesService.addQuestion(body, serviceId);
     sendResponse(res, {
       statusCode: 200,
       success: true,

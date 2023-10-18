@@ -54,7 +54,7 @@ const createService = async (payload: any) => {
 //!
 const addToCart = async (payload: any) => {
   const { serviceId, userId } = payload;
-
+  console.log(payload);
   const isExist = await Cart.findOne({ service: serviceId, user: userId });
   if (isExist) {
     throw new ApiError(400, 'Service already exists');
@@ -145,7 +145,7 @@ const getAllService = async (
   paginationOptions: IPaginationOptions,
 ): Promise<IGenericResponse<any[]>> => {
   const { searchTerm, minPrice, maxPrice, ...filtersData } = filters;
-
+  // console.log(minPrice);
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
 
@@ -200,14 +200,19 @@ const getAllService = async (
 };
 //!
 const getSingleService = async (id: string) => {
-  const service = await Service.findById(id).populate('category');
+  const service = await Service.findById(id)
+    .populate('category')
+    .populate('reviews.user')
+    .populate('questions.user');
   return service;
 };
 //!
-const addReviewInService = async (body: any, serviceId: string, user: any) => {
-  const { rating, review }: IAddReviewData = body;
-
-  const service = await Service.findById(serviceId);
+const addReviewInService = async (body: any, serviceId: string) => {
+  const { rating, review, user }: IAddReviewData = body;
+  // console.log(body);
+  const service = await Service.findById(serviceId)
+    .populate('reviews.user')
+    .exec();
   if (!service) {
     throw new ApiError(404, 'Service not found');
   }
@@ -216,7 +221,8 @@ const addReviewInService = async (body: any, serviceId: string, user: any) => {
     rating,
     comment: review,
   };
-  const reviews: IReview[] = (service?.reviews || []) as IReview[];
+  console.log(reviewData);
+  const reviews: IReview[] = (service?.reviews || []) as unknown as IReview[];
   reviews.push(reviewData);
   let avg = 0;
   reviews.forEach((rev: any) => {
@@ -230,9 +236,9 @@ const addReviewInService = async (body: any, serviceId: string, user: any) => {
 };
 //!
 //add question
-const addQuestion = async (body: any, serviceId: string, user: any) => {
-  const { question }: IAddQuestionData = body;
-  const service = await Service.findById(serviceId);
+const addQuestion = async (body: any, serviceId: string) => {
+  const { question, user }: IAddQuestionData = body;
+  const service = await Service.findById(serviceId).populate('questions.user');
 
   if (!service) {
     throw new ApiError(404, 'Service not found');

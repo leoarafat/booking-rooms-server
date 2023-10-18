@@ -1,15 +1,9 @@
 import { Schema, model } from 'mongoose';
-import {
-  IBannerImage,
-  IBlog,
-  ICategory,
-  IFaqItem,
-  ILayout,
-} from './layouts.interface';
+import { IBannerImage, IBlog, ICategory, ILayout } from './layouts.interface';
 
-const faqSchema = new Schema<IFaqItem>({
-  question: { type: String },
-  answer: { type: String },
+const faqSchema = new Schema({
+  question: String,
+  answer: String,
 });
 const categorySchema = new Schema<ICategory>({
   title: { type: String },
@@ -52,11 +46,11 @@ const blogSchema = new Schema<IBlog>(
     avatar: {
       public_id: {
         type: String,
-        required: true,
+        // required: true,
       },
       url: {
         type: String,
-        required: true,
+        // required: true,
       },
     },
   },
@@ -70,4 +64,5 @@ const blogSchema = new Schema<IBlog>(
 
 const Layout = model<ILayout>('Layout', layoutSchema);
 export const Blog = model<IBlog>('Blog', blogSchema);
+export const FAQ = model('FAQ', faqSchema);
 export default Layout;

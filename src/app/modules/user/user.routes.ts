@@ -25,24 +25,32 @@ router.put(
   UserController.updateProfilePicture,
 );
 
-router.get('/', auth(ENUM_USER_ROLE.ADMIN), UserController.getAllUsers);
+router.get(
+  '/',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  UserController.getAllUsers,
+);
 router.get(
   '/:id',
-  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUPER_ADMIN),
   UserController.getSingleUser,
 );
 router.patch(
-  '/:id/my-profile',
+  '/update-my-profile/:id',
   validateRequest(UserValidation.updateUserZodSchema),
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUPER_ADMIN),
   UserController.updateUser,
 );
 router.patch(
-  '/:id/user-profile',
+  '/user-profile/:id',
   validateRequest(UserValidation.updateUserZodSchema),
-  auth(ENUM_USER_ROLE.SUPER_ADMIN),
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   UserController.updateUser,
 );
-router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.deleteUser);
+router.delete(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
+  UserController.deleteUser,
+);
 
 export const UserRoutes = router;

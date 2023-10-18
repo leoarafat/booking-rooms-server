@@ -91,7 +91,7 @@ const insertIntoDB = async (payload: any) => {
     endDate: parsedEndDate,
     totalPrice: totalPrice,
     room: room,
-    user: user._id,
+    user: userId,
   };
   // Mail data
   const mailData = {
@@ -138,6 +138,7 @@ const insertIntoDB = async (payload: any) => {
 //!
 const myBookings = async (user: any) => {
   const { userId } = user;
+  console.log(userId);
   const bookings = await Booking.find({
     user: userId,
   }).populate('user');
@@ -151,6 +152,7 @@ const cancelBooking = async (data: any) => {
 };
 //!
 const updateBooking = async (id: string, payload: any) => {
+  console.log(payload);
   const isBooking = await Booking.findById(id);
   if (!isBooking) {
     throw new ApiError(404, 'Booking not found');
@@ -166,10 +168,15 @@ const updateBooking = async (id: string, payload: any) => {
   );
   return result;
 };
+const getSIngleBooking = async (id: string) => {
+  const service = await Booking.findById(id);
+  return service;
+};
 export const BookingService = {
   getAllBookings,
   insertIntoDB,
   myBookings,
   cancelBooking,
   updateBooking,
+  getSIngleBooking,
 };

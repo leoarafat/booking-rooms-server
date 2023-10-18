@@ -4,7 +4,10 @@ import { IComment } from './service.interface';
 
 const reviewSchema = new Schema(
   {
-    user: Object,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
     rating: {
       type: Number,
       default: 0,
@@ -20,7 +23,10 @@ const reviewSchema = new Schema(
 );
 const commentSchema = new Schema<IComment>(
   {
-    user: Object,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
     question: String,
     questionReplies: [Object],
   },
@@ -57,7 +63,7 @@ const ServiceSchema = new Schema(
       type: String,
       required: [true, 'propertyDetails is required'],
     },
-    availablity: {
+    availability: {
       type: String,
       enum: ['Available', 'Unavailable'],
       default: 'Available',

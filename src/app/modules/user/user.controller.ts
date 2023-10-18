@@ -48,6 +48,8 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 //!
 const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
+  // console.log(user);
+
   const result = await UserService.getSingleUser(id);
   sendResponse<IUser>(res, {
     statusCode: 200,
@@ -59,6 +61,7 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
 //!
 const updateProfilePicture: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
+    // console.log(req.body, 'Body');
     //@ts-ignore
     const result = await UserService.updateProfilePicture(req);
     sendResponse(res, {
@@ -72,7 +75,9 @@ const updateProfilePicture: RequestHandler = catchAsync(
 //!
 const updateUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
+
   const updatedData = req.body;
+
   const result = await UserService.updateUser(id, updatedData);
   sendResponse<IUser>(res, {
     statusCode: 200,

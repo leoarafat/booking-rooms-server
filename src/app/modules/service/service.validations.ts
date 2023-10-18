@@ -26,20 +26,13 @@ const create = z.object({
       required_error: 'houseRules is required',
     }),
 
-    availablity: z.enum(
-      [...Object.values(['Available', 'Unavailable'])] as [string, ...string[]],
-      {
-        required_error: 'Location is required',
-      },
-    ),
-
     propertyLocation: z.string({
       required_error: 'Property Location is required',
     }),
-    thumbnail: z.object({
-      public_id: z.string({ required_error: 'Public id  is required' }),
-      url: z.string({ required_error: 'Url  is required' }),
-    }),
+    // thumbnail: z.object({
+    //   public_id: z.string({ required_error: 'Public id  is required' }),
+    //   url: z.string({ required_error: 'Url  is required' }),
+    // }),
     facilities: z.string({
       required_error: 'facilities id is required',
     }),
@@ -66,12 +59,12 @@ const update = z.object({
         ...string[],
       ])
       .optional(),
-    thumbnail: z
-      .object({
-        public_id: z.string({}).optional(),
-        url: z.string({}).optional(),
-      })
-      .optional(),
+    // thumbnail: z
+    //   .object({
+    //     public_id: z.string({}).optional(),
+    //     url: z.string({}).optional(),
+    //   })
+    //   .optional(),
     facilities: z.string({}).optional(),
     category: z.string({}).optional(),
   }),

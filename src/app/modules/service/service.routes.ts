@@ -12,7 +12,7 @@ router.get('/', ServiceController.getAllService);
 router.post(
   '/create-service',
   validateRequest(ServiceValidation.create),
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   ServiceController.createService,
 );
 router.post(
@@ -30,7 +30,7 @@ router.get(
 
 router.delete(
   '/:id',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   ServiceController.deleteService,
 );
 router.delete(
@@ -39,7 +39,7 @@ router.delete(
   ServiceController.removeFromCart,
 );
 router.put(
-  '/:id/add-question',
+  '/:id/add-comment',
   auth(ENUM_USER_ROLE.USER),
   ServiceController.addQuestion,
 );
@@ -49,14 +49,14 @@ router.put(
   ServiceController.addQuestionAnswer,
 );
 router.put(
-  '/add-review/:id',
-  auth(ENUM_USER_ROLE.USER),
+  '/:id/add-review',
+  // auth(ENUM_USER_ROLE.USER),
   ServiceController.addReviewInService,
 );
 router.patch(
   '/update-service/:id',
   validateRequest(ServiceValidation.update),
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   ServiceController.updateService,
 );
 export const ServiceRoutes = router;
