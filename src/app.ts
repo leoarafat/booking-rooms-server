@@ -10,7 +10,8 @@ export const app: Application = express();
 //cors
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000'],
+    // origin: ['https://hotel-haven-seven.vercel.app'],
     credentials: true,
   }),
 );

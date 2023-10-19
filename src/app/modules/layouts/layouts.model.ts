@@ -1,10 +1,18 @@
 import { Schema, model } from 'mongoose';
 import { IBannerImage, IBlog, ICategory, ILayout } from './layouts.interface';
 
-const faqSchema = new Schema({
-  question: String,
-  answer: String,
-});
+const faqSchema = new Schema(
+  {
+    question: String,
+    answer: String,
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+  },
+);
 const categorySchema = new Schema<ICategory>({
   title: { type: String },
 });

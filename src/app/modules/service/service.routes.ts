@@ -50,7 +50,7 @@ router.put(
 );
 router.put(
   '/:id/add-review',
-  // auth(ENUM_USER_ROLE.USER),
+  auth(ENUM_USER_ROLE.USER),
   ServiceController.addReviewInService,
 );
 router.patch(

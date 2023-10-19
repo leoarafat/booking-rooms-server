@@ -8,17 +8,17 @@ const router = express.Router();
 
 router.get(
   '/get-users-analytics',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   AnalyticsController.getUsersAnalytics,
 );
 router.get(
   '/get-services-analytics',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   AnalyticsController.getCourseAnalytics,
 );
 router.get(
   '/get-bookings-analytics',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   AnalyticsController.getOrdersAnalytics,
 );
 

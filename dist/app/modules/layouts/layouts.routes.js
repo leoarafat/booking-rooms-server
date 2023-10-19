@@ -1,0 +1,24 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LayoutRoutes = void 0;
+const express_1 = __importDefault(require("express"));
+const layouts_controller_1 = require("./layouts.controller");
+const auth_1 = __importDefault(require("../../middlewares/auth"));
+const user_1 = require("../../../enums/user");
+const validateRequest_1 = require("../../middlewares/validateRequest");
+const layouts_validations_1 = require("./layouts.validations");
+const router = express_1.default.Router();
+router.get('/blog', layouts_controller_1.LayoutController.getBlog);
+router.post('/create-layout', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN), layouts_controller_1.LayoutController.createLayout);
+router.post('/create-blog', (0, validateRequest_1.validateRequest)(layouts_validations_1.BlogValidation.create), (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN), layouts_controller_1.LayoutController.createBlog);
+router.post('/create-faq', (0, validateRequest_1.validateRequest)(layouts_validations_1.BlogValidation.faq), (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN), layouts_controller_1.LayoutController.createFAQ);
+router.put('/update-layout', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), layouts_controller_1.LayoutController.updateLayout);
+router.put('/update-blog/:id', (0, validateRequest_1.validateRequest)(layouts_validations_1.BlogValidation.update), (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN), layouts_controller_1.LayoutController.updateBlog);
+router.get('/get-layout/:type', layouts_controller_1.LayoutController.getLayoutByType);
+router.get('/faq', layouts_controller_1.LayoutController.getAllFAQs);
+router.get('/blog/:id', layouts_controller_1.LayoutController.getBlogById);
+router.delete('/blog/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), layouts_controller_1.LayoutController.deleteBlog);
+exports.LayoutRoutes = router;

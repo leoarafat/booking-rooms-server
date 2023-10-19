@@ -37,6 +37,7 @@ const getAllBookings = async (paginationOptions: IPaginationOptions) => {
 
 //!
 const insertIntoDB = async (payload: any) => {
+  // console.log(payload);
   const { serviceId, startDate, endDate, userId, room } = payload;
 
   // Check if the user and service exist
@@ -62,22 +63,13 @@ const insertIntoDB = async (payload: any) => {
     throw new ApiError(400, 'Invalid booking duration');
   }
 
-  const bookingPrice = numberOfDays * service.price;
+  const bookingPrice = numberOfDays * service.price!;
   const totalPrice = bookingPrice * room;
 
-  // Check if the room is already booked for the specified date range
   const alreadyBookedRooms = await Booking.find({
-    $or: [
-      {
-        startDate: { $lte: parsedEndDate },
-        endDate: { $gte: parsedStartDate },
-      },
-      {
-        startDate: { $gte: parsedEndDate }, // Check if startDate is after endDate
-      },
-    ],
+    startDate: parsedStartDate,
+    endDate: parsedEndDate,
   });
-
   if (alreadyBookedRooms.length > 0) {
     throw new ApiError(
       400,
@@ -138,7 +130,6 @@ const insertIntoDB = async (payload: any) => {
 //!
 const myBookings = async (user: any) => {
   const { userId } = user;
-  console.log(userId);
   const bookings = await Booking.find({
     user: userId,
   }).populate('user');
@@ -152,7 +143,6 @@ const cancelBooking = async (data: any) => {
 };
 //!
 const updateBooking = async (id: string, payload: any) => {
-  console.log(payload);
   const isBooking = await Booking.findById(id);
   if (!isBooking) {
     throw new ApiError(404, 'Booking not found');

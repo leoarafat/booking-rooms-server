@@ -54,9 +54,9 @@ const removeFromCart: RequestHandler = catchAsync(
 //!
 const getMyCart: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const data = req.body;
+    const user = req.user;
 
-    const result = await ServicesService.getMyCart(data);
+    const result = await ServicesService.getMyCart(user);
     sendResponse(res, {
       statusCode: 200,
       success: true,

@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BookingRoutes = void 0;
+const express_1 = __importDefault(require("express"));
+const booking_controller_1 = require("./booking.controller");
+const user_1 = require("../../../enums/user");
+const auth_1 = __importDefault(require("../../middlewares/auth"));
+const booking_validations_1 = require("./booking.validations");
+const validateRequest_1 = require("../../middlewares/validateRequest");
+const router = express_1.default.Router();
+router.get('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN), booking_controller_1.BookingController.getAllBookings);
+router.post('/', (0, validateRequest_1.validateRequest)(booking_validations_1.BookingValidation.create), (0, auth_1.default)(user_1.ENUM_USER_ROLE.USER), booking_controller_1.BookingController.insertIntoDB);
+router.get('/my-bookings', (0, auth_1.default)(user_1.ENUM_USER_ROLE.USER), booking_controller_1.BookingController.myBookings);
+router.get('/:id', booking_controller_1.BookingController.getSIngleBooking);
+router.delete('/cancel-bookings', (0, auth_1.default)(user_1.ENUM_USER_ROLE.USER, user_1.ENUM_USER_ROLE.ADMIN), booking_controller_1.BookingController.cancelBooking);
+router.patch('/update-booking/:id', (0, validateRequest_1.validateRequest)(booking_validations_1.BookingValidation.update), (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), booking_controller_1.BookingController.updateBooking);
+exports.BookingRoutes = router;
