@@ -5,6 +5,11 @@ const mongoose_1 = require("mongoose");
 const faqSchema = new mongoose_1.Schema({
     question: String,
     answer: String,
+}, {
+    timestamps: true,
+    toJSON: {
+        virtuals: true,
+    },
 });
 const categorySchema = new mongoose_1.Schema({
     title: { type: String },

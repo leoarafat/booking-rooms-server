@@ -22,8 +22,6 @@ router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.EN
 router.delete('/:id/cart', (0, auth_1.default)(user_1.ENUM_USER_ROLE.USER), service_controller_1.ServiceController.removeFromCart);
 router.put('/:id/add-comment', (0, auth_1.default)(user_1.ENUM_USER_ROLE.USER), service_controller_1.ServiceController.addQuestion);
 router.put('/:id/add-answer', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), service_controller_1.ServiceController.addQuestionAnswer);
-router.put('/:id/add-review', 
-// auth(ENUM_USER_ROLE.USER),
-service_controller_1.ServiceController.addReviewInService);
+router.put('/:id/add-review', (0, auth_1.default)(user_1.ENUM_USER_ROLE.USER), service_controller_1.ServiceController.addReviewInService);
 router.patch('/update-service/:id', (0, validateRequest_1.validateRequest)(service_validations_1.ServiceValidation.update), (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SUPER_ADMIN), service_controller_1.ServiceController.updateService);
 exports.ServiceRoutes = router;

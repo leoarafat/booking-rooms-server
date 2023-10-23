@@ -56,8 +56,8 @@ const removeFromCart = (0, catchasync_1.default)((req, res) => __awaiter(void 0,
 }));
 //!
 const getMyCart = (0, catchasync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const data = req.body;
-    const result = yield service_service_1.ServicesService.getMyCart(data);
+    const user = req.user;
+    const result = yield service_service_1.ServicesService.getMyCart(user);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         success: true,

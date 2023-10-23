@@ -14,6 +14,7 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 exports.app = (0, express_1.default)();
 //cors
 exports.app.use((0, cors_1.default)({
+    // origin: ['http://localhost:3000'],
     origin: ['https://hotel-haven-seven.vercel.app'],
     credentials: true,
 }));

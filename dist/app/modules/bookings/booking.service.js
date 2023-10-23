@@ -57,6 +57,7 @@ const getAllBookings = (paginationOptions) => __awaiter(void 0, void 0, void 0, 
 });
 //!
 const insertIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    // console.log(payload);
     const { serviceId, startDate, endDate, userId, room } = payload;
     // Check if the user and service exist
     const user = (yield user_model_1.default.findById(userId));
@@ -78,17 +79,9 @@ const insertIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* ()
     }
     const bookingPrice = numberOfDays * service.price;
     const totalPrice = bookingPrice * room;
-    // Check if the room is already booked for the specified date range
     const alreadyBookedRooms = yield booking_model_1.Booking.find({
-        $or: [
-            {
-                startDate: { $lte: parsedEndDate },
-                endDate: { $gte: parsedStartDate },
-            },
-            {
-                startDate: { $gte: parsedEndDate }, // Check if startDate is after endDate
-            },
-        ],
+        startDate: parsedStartDate,
+        endDate: parsedEndDate,
     });
     if (alreadyBookedRooms.length > 0) {
         throw new Apierror_1.default(400, 'Rooms are already booked for the specified date range');
@@ -143,7 +136,6 @@ const insertIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* ()
 //!
 const myBookings = (user) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = user;
-    console.log(userId);
     const bookings = yield booking_model_1.Booking.find({
         user: userId,
     }).populate('user');
@@ -157,7 +149,6 @@ const cancelBooking = (data) => __awaiter(void 0, void 0, void 0, function* () {
 });
 //!
 const updateBooking = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(payload);
     const isBooking = yield booking_model_1.Booking.findById(id);
     if (!isBooking) {
         throw new Apierror_1.default(404, 'Booking not found');
