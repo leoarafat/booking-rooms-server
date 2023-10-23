@@ -67,6 +67,7 @@ const insertIntoDB = async (payload: any) => {
   const totalPrice = bookingPrice * room;
 
   const alreadyBookedRooms = await Booking.find({
+    _id: serviceId,
     startDate: parsedStartDate,
     endDate: parsedEndDate,
   });
