@@ -80,6 +80,7 @@ const insertIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* ()
     const bookingPrice = numberOfDays * service.price;
     const totalPrice = bookingPrice * room;
     const alreadyBookedRooms = yield booking_model_1.Booking.find({
+        _id: serviceId,
         startDate: parsedStartDate,
         endDate: parsedEndDate,
     });
