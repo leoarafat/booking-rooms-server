@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ApiError from '../../../errors/Apierror';
-import path from 'path';
-import ejs from 'ejs';
+// import path from 'path';
+// import ejs from 'ejs';
 import { Service } from '../service/service.model';
 import User from '../user/user.model';
 import { Booking } from './booking.model';
-import sendEmail from '../../../utils/sendMail';
-import Notification from '../notification/notification.model';
 import { IBooking } from './booking.interface';
 import { IPaginationOptions } from '../../../interfaces/paginations';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
@@ -87,43 +85,43 @@ const insertIntoDB = async (payload: any) => {
     user: userId,
   };
   // Mail data
-  const mailData = {
-    order: {
-      _id: service._id.toString().slice(0, 6),
-      name: service.propertyName,
-      price: bookingPrice,
-      startDate: parsedStartDate,
-      endDate: parsedEndDate,
-      date: new Date().toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }),
-    },
-  };
-  await ejs.renderFile(
-    path.join(__dirname, '../../../mails/order-confirmation.ejs'),
-    { order: mailData },
-  );
-  try {
-    if (user || service) {
-      await sendEmail({
-        email: user.email,
-        subject: 'Booking Confirmation',
-        template: 'order-confirmation.ejs',
-        data: mailData,
-      });
-    }
-  } catch (error: any) {
-    throw new ApiError(400, `${error.message}`);
-  }
+  // const mailData = {
+  //   order: {
+  //     _id: service._id.toString().slice(0, 6),
+  //     name: service.propertyName,
+  //     price: bookingPrice,
+  //     startDate: parsedStartDate,
+  //     endDate: parsedEndDate,
+  //     date: new Date().toLocaleDateString('en-US', {
+  //       year: 'numeric',
+  //       month: 'long',
+  //       day: 'numeric',
+  //     }),
+  //   },
+  // };
+  // await ejs.renderFile(
+  //   path.join(__dirname, '../../../mails/order-confirmation.ejs'),
+  //   { order: mailData },
+  // );
+  // try {
+  //   if (user || service) {
+  //     await sendEmail({
+  //       email: user.email,
+  //       subject: 'Booking Confirmation',
+  //       template: 'order-confirmation.ejs',
+  //       data: mailData,
+  //     });
+  //   }
+  // } catch (error: any) {
+  //   throw new ApiError(400, `${error.message}`);
+  // }
   // Add the booking to the service's bookings array
   const result = (await Booking.create(booking)).populate('user');
-  await Notification.create({
-    user: user?._id,
-    title: 'New Booking',
-    message: `You have a new order from ${service?.propertyName}`,
-  });
+  // await Notification.create({
+  //   user: user?._id,
+  //   title: 'New Booking',
+  //   message: `You have a new order from ${service?.propertyName}`,
+  // });
   return result;
 };
 //!
